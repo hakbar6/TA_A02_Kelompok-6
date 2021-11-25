@@ -41,11 +41,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder encoder(){ return new BCryptPasswordEncoder();}
 
+    // buat testing
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
 //        auth.inMemoryAuthentication()
 //                .passwordEncoder(encoder())
-//                .withUser("kijangSatu").password(encoder().encode("nasiGoreng"))
+//                .withUser("SIRETAIL").password(encoder().encode("SIRETAIL"))
 //                .roles("USER");
 //    }
 

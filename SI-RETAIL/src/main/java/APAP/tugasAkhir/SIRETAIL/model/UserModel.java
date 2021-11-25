@@ -28,7 +28,7 @@ import java.io.Serializable;
 public class UserModel implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_user;
 
     @NotNull
     @Size(max=50)
@@ -41,7 +41,7 @@ public class UserModel implements Serializable{
     private String username;
 
     @NotNull
-    @Size(max=50)
+    @Size(max=200)
     @Column(name = "password", nullable = false)
     private String password;
 

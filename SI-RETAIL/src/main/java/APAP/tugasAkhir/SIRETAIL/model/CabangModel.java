@@ -33,7 +33,7 @@ public class CabangModel implements Serializable{
 
     @NotNull
     @Size(max=30)
-    @Column(name = "nama_cabang", nullable = false)
+    @Column(name = "nama", nullable = false)
     private String namaCabang;
 
     @NotNull
@@ -43,23 +43,23 @@ public class CabangModel implements Serializable{
 
     @NotNull
     @Column(name = "ukuran", nullable = false)
-    private Integer ukuranCabang;
+    private int ukuranCabang;
 
     @NotNull
     @Column(name = "status", nullable = false)
-    private Integer statusCabang;
+    private int statusCabang;
 
     @NotNull
-    @Column(name = "noTelp", nullable = false)
+    @Size(max = 20)
+    @Column(name = "no_telp", nullable = false)
     private String noTelpCabang;
 
     // Many to one dengan user
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_user", referencedColumnName = "id_User", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "penanggung_jawab", referencedColumnName = "id_user", nullable = false)
     private UserModel user;
 
     // One to many dengan item
-    @OneToMany(mappedBy = "cabang", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cabang", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ItemCabangModel> listItem;
 }
