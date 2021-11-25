@@ -1,7 +1,8 @@
 # Tugas Akhir
 ## Authors
-* **Nama 1** - *190xxx* - *kelas*
-* **Nama 2** - *190xxx* - *kelas*
+* **Harakan Akbar** - *190xxx* - *A* - *Ketua*
+* **Abdillah Evan** - *1906398805* - *A*
+* **Muhammad Anis** - *190xxx* - *A*
 
 ---
 **Kontrak Tahap 1 Tugas Akhir**
