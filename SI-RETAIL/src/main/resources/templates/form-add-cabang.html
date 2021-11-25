@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Form Tambah Cabang</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2><b>Form Tambah Cabang</b></h2>
+                <br>
+                <form th:action="@{/cabang/create}" th:object="${cabang}" method="POST">
+                    Nama Cabang: <br>
+                    <input required class="form-control" type="text" name="namaCabang"/>
+                    <br><br>
+
+                    Alamat: <br>
+                    <input required class="form-control" type="text" name="alamatCabang"/>
+                    <br><br>
+
+                    Nomor Telepon: <br>
+                    <input required class="form-control" type="text" name="noTelpCabang"/>
+                    <br><br>
+
+                    Ukuran (m<sup>2</sup>): <br>
+                    <input required class="form-control" type="number" name="ukuranCabang"/>
+                    <br><br>
+
+                    <a class="btn btn-danger" href="/">Cancel</a>
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

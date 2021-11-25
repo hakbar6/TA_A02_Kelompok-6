@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Detail Cabang</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2>Detail Cabang</h2>
+                <br>
+                <p th:text="'Nomor Cabang: ' + ${cabang.noCabang}"></p>
+                <p th:text="'Nama Cabang: ' + ${cabang.namaCabang}"></p>
+                <p th:text="'Alamat: ' + ${cabang.alamatCabang}"></p>
+                <p th:text="'Ukuran: ' + ${cabang.ukuranCabang}"></p>
+                <p th:text="'No. Telepon Cabang: ' + ${cabang.noTeleponCabang}"></p>
+                <p th:text="'Status: ' + ${cabang.statusCabang}"></p>
+                <br>
+                <div class="col">
+                    <h6>List Item:</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

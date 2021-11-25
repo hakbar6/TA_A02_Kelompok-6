@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Berhasil Tambah Cabang</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2 th:text="'Cabang dengan nomor ' + ${noCabang} + ' berhasil ditambahkan.'"></h2>
+                <br>
+                <a class="btn btn-primary" href="/">Kembali ke Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
