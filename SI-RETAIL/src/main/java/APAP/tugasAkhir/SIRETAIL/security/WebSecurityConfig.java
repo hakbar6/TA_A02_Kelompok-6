@@ -20,6 +20,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
+                .antMatchers("/user/create").hasAuthority("Kepala Retail")
+                .antMatchers("/user/update/**").hasAuthority("Kepala Retail")
+                .antMatchers("/user/update/**").hasAuthority("Manager Cabang")
+                .antMatchers("/cabang/create").hasAuthority("Manager Cabang")
+                .antMatchers("/cabang/create").hasAuthority("Kepala Retail")
+                .antMatchers("/cabang/update/**").hasAuthority("Manager Cabang")
+                .antMatchers("/cabang/update/**").hasAuthority("Kepala Retail")
+                .antMatchers("/cabang/delete/**").hasAuthority("Manager Cabang")
+                .antMatchers("/cabang/delete/**").hasAuthority("Kepala Retail")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -32,11 +41,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder encoder(){ return new BCryptPasswordEncoder();}
 
+    // buat testing
 //    @Autowired
 //    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
 //        auth.inMemoryAuthentication()
 //                .passwordEncoder(encoder())
-//                .withUser("kijangSatu").password(encoder().encode("nasiGoreng"))
+//                .withUser("SIRETAIL").password(encoder().encode("SIRETAIL"))
 //                .roles("USER");
 //    }
 

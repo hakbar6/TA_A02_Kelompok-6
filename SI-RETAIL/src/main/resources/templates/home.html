@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<div class="container">
+    <div class="card m-4 p-4 cardHome">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="m-4">
+                    <h2><b>Selamat datang di SIRETAIL</b></h2>
+                    <h3 th:text="'Hello ' +${#httpServletRequest.remoteUser} +'! sebagai ' +${role}"></h3>
+                    <br><br>
+                    <h4 class="txt-align">List of feature</h4>
+                    <div class="d-flex justify-content-center">
+                        <a th:if="${role} == 'Kepala Retail'" th:href="@{/user/create}" class="mx-2 btn btn-outline-dark"> Create User </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
