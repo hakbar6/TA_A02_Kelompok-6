@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Cabang</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
+<div class="container justify-content-center">
+    <br>
+    <h2>Daftar Cabang</h2>
+    <br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="text-center align-middle"></th>
+            <th class="text-center align-middle">Nomor Cabang</th>
+            <th class="text-center align-middle">Nama Cabang</th>
+            <th class="text-center align-middle">No Telp</th>
+            <th class="text-center align-middle">Ukuran (m<sup>2</sup>)</th>
+            <th class="text-center align-middle">Jumlah Item</th>
+            <th class="text-center align-middle">Status</th>
+            <th class="text-center align-middle"></th>
+            <th class="text-center align-middle"></th>
+            <th class="text-center align-middle"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cabang, iterationStatus : ${listCabang}" th:style="${iterationStatus.even} ? 'font-weight:bold;'">
+            <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
+            <td class="text-center align-middle" th:text="${cabang.noCabang}"></td>
+            <td class="text-center align-middle" th:text="${cabang.namaCabang}"></td>
+            <td class="text-center align-middle" th:text="${cabang.noTelpCabang}"></td>
+            <td class="text-center align-middle" th:text="${cabang.ukuranCabang}"></td>
+            <td class="text-center align-middle" th:text="${#lists.size(cabang.listItem)}"></td>
+            <td class="text-center align-middle" th:text="${cabang.statusCabang}"></td>
+            <td class="text-center align-middle"><a class="btn btn-info" th:href="@{/cabang/view(noCabang=${cabang.noCabang})}">Detail Cabang</a></td>
+            <div sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')">
+                <td class="text-center align-middle"><a class="btn btn-primary" th:href="@{/cabang/update/} + ${cabang.noCabang}">Update Cabang</a></td>
+                <td class="text-center align-middle"><a class="btn btn-danger" th:href="@{/cabang/delete/} + ${cabang.noCabang}">Delete Cabang</a></td>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <a class="btn btn-primary" href="/">Kembali ke Home</a>
+    <br>
+</div>
+</body>
+</html>
