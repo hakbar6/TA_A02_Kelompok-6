@@ -12,7 +12,6 @@ public class RoleServiceImpl implements RoleService{
     @Autowired
     private RoleDb roleDb;
 
-
     @Override
     public List<RoleModel> listRole() {
         return roleDb.findAll();
