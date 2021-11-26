@@ -32,7 +32,6 @@ public class CabangController {
     public String addCabangForm(Model model) {
         CabangModel cabang = new CabangModel();
         model.addAttribute("cabang", cabang);
-
         return "form-add-cabang";
     }
 
@@ -44,7 +43,6 @@ public class CabangController {
     ) {
         cabangService.addCabang(cabang);
         model.addAttribute("noCabang", cabang.getNoCabang());
-
         return "add-cabang";
     }
 
@@ -56,7 +54,6 @@ public class CabangController {
     ) {
         CabangModel cabang = cabangService.getCabang(noCabang);
         model.addAttribute("cabang", cabang);
-
         return "form-update-cabang";
     }
 
@@ -68,7 +65,6 @@ public class CabangController {
     ) {
         cabangService.updateCabang(cabang);
         model.addAttribute("noCabang", cabang.getNoCabang());
-
         return "update-cabang";
     }
 
@@ -87,7 +83,6 @@ public class CabangController {
         }
 
         cabangService.deleteCabang(noCabang);
-
         return "delete-cabang";
     }
 
