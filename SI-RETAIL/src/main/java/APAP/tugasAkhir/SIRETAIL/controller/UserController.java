@@ -46,4 +46,11 @@ public class UserController {
         userService.addUser(user);
         return "redirect:/";
     }
+
+    @GetMapping(value = "/viewalluser")
+    public String viewUser(Model model){
+        List<UserModel> userList = userService.daftarUser();
+        model.addAttribute("userList", userList);
+        return "viewall-user";
+    }
 }

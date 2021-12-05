@@ -20,32 +20,33 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
-                .antMatchers("/user/create").hasAuthority("Kepala Retail")
-                .antMatchers("/user/update/**").hasAuthority("Kepala Retail")
-                .antMatchers("/user/update/**").hasAuthority("Manager Cabang")
-                .antMatchers("/cabang/create").hasAnyAuthority("Manager Cabang", "Kepala Retail")
-                .antMatchers("/cabang/update/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
-                .antMatchers("/cabang/delete/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login").permitAll();
+                // .antMatchers("/user/create").hasAuthority("Kepala Retail")
+                // .antMatchers("/user/update/**").hasAuthority("Kepala Retail")
+                // .antMatchers("/user/update/**").hasAuthority("Manager Cabang")
+                // .antMatchers("/cabang/create").hasAnyAuthority("Manager Cabang", "Kepala Retail")
+                // .antMatchers("/cabang/update/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
+                // .antMatchers("/cabang/delete/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
+                // .anyRequest().authenticated()
+                // .and()
+                // .formLogin()
+                // .loginPage("/login").permitAll()
+                // .and()
+                // .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                // .logoutSuccessUrl("/login").permitAll()
+                ;
     }
 
     @Bean
     public BCryptPasswordEncoder encoder(){ return new BCryptPasswordEncoder();}
 
     // buat testing
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-//        auth.inMemoryAuthentication()
-//                .passwordEncoder(encoder())
-//                .withUser("SIRETAIL").password(encoder().encode("SIRETAIL"))
-//                .roles("USER");
-//    }
+   @Autowired
+   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+       auth.inMemoryAuthentication()
+               .passwordEncoder(encoder())
+               .withUser("SIRETAIL").password(encoder().encode("SIRETAIL"))
+               .roles("USER");
+   }
 
     @Autowired
     private UserDetailsService userDetailsService;
