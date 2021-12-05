@@ -32,7 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login").permitAll()
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login").permitAll();
+                .logoutSuccessUrl("/login").permitAll()
+                .and()
+                .exceptionHandling().accessDeniedPage("/403");;
     }
 
     @Bean
