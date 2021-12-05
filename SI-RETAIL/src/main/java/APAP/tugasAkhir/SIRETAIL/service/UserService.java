@@ -10,4 +10,5 @@ public interface UserService {
     List<UserModel> daftarUser();
     public String encrypt(String password);
     UserModel updateUser(UserModel userBaru);
+    String confirmPasswordWhenCreate (String password);
 }
