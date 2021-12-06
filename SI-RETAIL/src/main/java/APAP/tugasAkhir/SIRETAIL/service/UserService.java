@@ -1,5 +1,6 @@
 package APAP.tugasAkhir.SIRETAIL.service;
 
+import APAP.tugasAkhir.SIRETAIL.model.RoleModel;
 import APAP.tugasAkhir.SIRETAIL.model.UserModel;
 import org.apache.catalina.User;
 
@@ -10,4 +11,5 @@ public interface UserService {
     List<UserModel> daftarUser();
     public String encrypt(String password);
     UserModel updateUser(UserModel userBaru);
+    UserModel getUserByUsername(String name);
 }
