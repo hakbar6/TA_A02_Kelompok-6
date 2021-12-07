@@ -30,7 +30,7 @@
   <div class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
       <li th:classappend="${page == 'Cabang'} ? active:''" class="nav-item">
-        <a class="nav-link" href="/store">Cabang</a>
+        <a class="nav-link" th:href="@{/cabang}">Cabang</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" th:action="@{/cabang/view}" method="GET">
