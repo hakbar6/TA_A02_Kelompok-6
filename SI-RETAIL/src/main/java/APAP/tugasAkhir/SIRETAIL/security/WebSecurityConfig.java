@@ -20,7 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
-                .antMatchers("/user/create").hasAuthority("Kepala Retail")
+//                .antMatchers("/user/create").hasAuthority("Kepala Retail")
                 .antMatchers("/cabang/create").hasAnyAuthority("Manager Cabang", "Kepala Retail")
                 .antMatchers("/cabang/update/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
                 .antMatchers("/cabang/delete/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
@@ -38,14 +38,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder encoder(){ return new BCryptPasswordEncoder();}
 
-    // buat testing
+//     buat testing
    @Autowired
    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
        auth.inMemoryAuthentication()
                .passwordEncoder(encoder())
                .withUser("SIRETAIL").password(encoder().encode("SIRETAIL"))
-               .roles("USER");
+               .roles("Kepala Retail");
    }
+
 
     @Autowired
     private UserDetailsService userDetailsService;
