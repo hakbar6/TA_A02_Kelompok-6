@@ -88,7 +88,7 @@ public class UserController {
         Model model
     ){
         userService.updateUser(user);
-        model.addAttribute("username", user.getUsername());
+        model.addAttribute("id", user.getId_user());
         return "update-user";
     }
 }

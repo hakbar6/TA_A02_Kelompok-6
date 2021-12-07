@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel updateUser(UserModel userBaru) {
-        UserModel userLama =  getUserByUsername(userBaru.getUsername());
+        UserModel userLama =  userDB.findById(userBaru.getId_user());
         userLama.setNamaUser(userBaru.getNamaUser());
         userLama.setUsername(userBaru.getUsername());
         userLama.setRole(userBaru.getRole());

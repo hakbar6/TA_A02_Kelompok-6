@@ -22,6 +22,7 @@
         <thead>
         <tr>
             <th class="text-center align-middle"></th>
+            <th class="text-center align-middle">Id User</th>
             <th class="text-center align-middle">Nama</th>
             <th class="text-center align-middle">Username</th>
             <th class="text-center align-middle">Role</th>
@@ -31,6 +32,7 @@
         <tbody>
         <tr th:each="user, iterationStatus : ${userList}" th:style="${iterationStatus.even} ? 'font-weight:bold;'">
             <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
+            <td class="text-center align-middle" th:text="${user.id_user}"></td>
             <td class="text-center align-middle" th:text="${user.namaUser}"></td>
             <td class="text-center align-middle" th:text="${user.username}"></td>
             <td class="text-center align-middle" th:text="${user.role.getRole()}"></td>
