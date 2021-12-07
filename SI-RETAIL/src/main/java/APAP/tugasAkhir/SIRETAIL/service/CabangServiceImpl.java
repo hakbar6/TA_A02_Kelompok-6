@@ -55,4 +55,10 @@ public class CabangServiceImpl implements CabangService{
     public List<CabangModel> getListCabang() {
         return cabangDb.findAll();
     }
+
+    // nanti ini hapus aja
+    @Override
+    public void testCabang() {
+
+    }
 }

@@ -10,4 +10,5 @@ public interface CabangService {
     void deleteCabang (Long noCabang);
     CabangModel getCabang(Long noCabang);
     List<CabangModel> getListCabang();
+    void testCabang();
 }
