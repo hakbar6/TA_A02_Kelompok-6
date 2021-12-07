@@ -30,7 +30,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user, iterationStatus : ${userList}" th:style="${iterationStatus.even} ? 'font-weight:bold;'">
+        <tr th:each="user, iterationStatus : ${userList}">
             <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
             <td class="text-center align-middle" th:text="${user.id_user}"></td>
             <td class="text-center align-middle" th:text="${user.namaUser}"></td>
