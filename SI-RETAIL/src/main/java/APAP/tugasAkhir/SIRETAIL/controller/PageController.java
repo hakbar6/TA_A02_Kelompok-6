@@ -18,7 +18,8 @@ public class PageController {
         String role = "";
         if( authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Kepala Retail")) ){
             role = "Kepala Retail";
-        }else if( authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Manager Cabang")) ){
+        }
+        else if( authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Manager Cabang")) ){
             role = "Manager Cabang";
         }else if( authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Staff Cabang")) ) {
             role = "Staff Cabang";

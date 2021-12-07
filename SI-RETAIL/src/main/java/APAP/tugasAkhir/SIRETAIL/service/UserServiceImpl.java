@@ -1,5 +1,6 @@
 package APAP.tugasAkhir.SIRETAIL.service;
 
+import APAP.tugasAkhir.SIRETAIL.model.RoleModel;
 import APAP.tugasAkhir.SIRETAIL.model.UserModel;
 import APAP.tugasAkhir.SIRETAIL.repository.UserDB;
 import org.apache.catalina.User;
@@ -72,7 +73,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserModel updateUser(UserModel userBaru) {
-        return userDB.save(userBaru);
+        Optional<UserModel> findUserLama =  userDB.findById(userBaru.getId_user());
+        UserModel userLama = new UserModel();
+        if (findUserLama.isPresent()) {
+            userLama = findUserLama.get();
+            userLama.setNamaUser(userBaru.getNamaUser());
+            userLama.setUsername(userBaru.getUsername());
+            userLama.setRole(userBaru.getRole());
+        }
+        return userDB.save(userLama);
     }
 
     @Override
@@ -154,6 +163,11 @@ public class UserServiceImpl implements UserService {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(password);
         return hashedPassword;
+    }
+
+    @Override
+    public UserModel getUserByUsername(String username) {
+        return userDB.findByUsername(username);
     }
 
 
