@@ -87,7 +87,7 @@ public class CabangController {
     }
 
     // Method untuk menampilkan daftar cabang
-    @GetMapping("/cabang/viewall")
+    @GetMapping("/cabang")
     public String viewAllCabang(Model model) {
         List<CabangModel> listCabang = cabangService.getListCabang();
         model.addAttribute("listCabang", listCabang);
