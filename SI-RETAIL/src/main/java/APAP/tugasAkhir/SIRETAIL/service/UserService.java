@@ -12,4 +12,8 @@ public interface UserService {
     public String encrypt(String password);
     UserModel updateUser(UserModel userBaru);
     UserModel getUserByUsername(String name);
+    String confirmPasswordWhenCreate (String password);
+    UserModel getUserNameLogin();
+    String confirmPasswordWhenUpdate (String oldPassword, String newPassword, String confirmedNewPassword);
+    void updatePassword(UserModel user, String newPassword);
 }
