@@ -21,8 +21,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
                 .antMatchers("/user/create").hasAuthority("Kepala Retail")
-                .antMatchers("/user/update/**").hasAuthority("Kepala Retail")
-                .antMatchers("/user/update/**").hasAuthority("Manager Cabang")
                 .antMatchers("/cabang/create").hasAnyAuthority("Manager Cabang", "Kepala Retail")
                 .antMatchers("/cabang/update/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
                 .antMatchers("/cabang/delete/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
@@ -34,20 +32,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login").permitAll()
                 .and()
-                .exceptionHandling().accessDeniedPage("/403");;
+                .exceptionHandling().accessDeniedPage("/403");
     }
 
     @Bean
     public BCryptPasswordEncoder encoder(){ return new BCryptPasswordEncoder();}
 
     // buat testing
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-//        auth.inMemoryAuthentication()
-//                .passwordEncoder(encoder())
-//                .withUser("SIRETAIL").password(encoder().encode("SIRETAIL"))
-//                .roles("USER");
-//    }
+   @Autowired
+   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
+       auth.inMemoryAuthentication()
+               .passwordEncoder(encoder())
+               .withUser("SIRETAIL").password(encoder().encode("SIRETAIL"))
+               .roles("USER");
+   }
 
     @Autowired
     private UserDetailsService userDetailsService;

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar User</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<div class="container justify-content-center">
+    <br>
+    <h2>Daftar User</h2>
+    <br>
+    <div class="alert" th:if=${pesanError}>
+        <div th:text="${pesanError}" class="alert alert-danger" onclick="this.parentElement.style.display='none';"></div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="text-center align-middle"></th>
+            <th class="text-center align-middle">Id User</th>
+            <th class="text-center align-middle">Nama</th>
+            <th class="text-center align-middle">Username</th>
+            <th class="text-center align-middle">Role</th>
+            <th class="text-center align-middle"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, iterationStatus : ${userList}" th:style="${iterationStatus.even} ? 'font-weight:bold;'">
+            <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
+            <td class="text-center align-middle" th:text="${user.id_user}"></td>
+            <td class="text-center align-middle" th:text="${user.namaUser}"></td>
+            <td class="text-center align-middle" th:text="${user.username}"></td>
+            <td class="text-center align-middle" th:text="${user.role.getRole()}"></td>
+            <td class="text-center align-middle">
+                <a class="btn btn-primary btn-primary" th:href="@{/user/update/} + ${user.username}">Ubah</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <a class="btn btn-primary" href="/">Kembali ke Home</a>
+    <br>
+</div>
+</body>
+</html>

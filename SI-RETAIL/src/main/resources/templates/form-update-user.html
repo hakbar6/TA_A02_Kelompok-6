@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Form Update User</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<div class="container">
+    <div class="card m-4 p-4">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2><b>Form Update User</b></h2>
+                <br>
+                <form th:action="@{/user/update}" th:object="${user}" method="POST">
+
+                    <input type="hidden" th:field="*{id_user}" />
+
+                    Nama User: <br>
+                    <input class="form-control" type="text" name="namaUser" th:value="*{namaUser}"/>
+                    <br><br>
+
+                    Username: <br>
+                    <input class="form-control" type="text" name="username" th:value="*{username}"/>
+                    <br><br>
+
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="Role">Role</label>
+                            <select th:field="*{role}" class="form-control" id="Role">
+                                <option th:each="i : ${role}" th:value="${i.id}" th:text="${i.role}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <a class="btn btn-danger" href="/user/viewalluser">Cancel</a>
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
