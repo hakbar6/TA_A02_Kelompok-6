@@ -57,8 +57,4 @@ public class CabangServiceImpl implements CabangService{
     }
 
     // nanti ini hapus aja
-    @Override
-    public void testCabang() {
-
-    }
 }
