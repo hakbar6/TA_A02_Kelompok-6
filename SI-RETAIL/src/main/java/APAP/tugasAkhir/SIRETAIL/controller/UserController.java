@@ -66,16 +66,30 @@ public class UserController {
                             Authentication auth,
                             RedirectAttributes red
         ){
-        System.out.println(username);
-        System.out.println(auth.getName());
-        String userWantToEditRole = userService.getUserByUsername(username).getRole().getRole();
-        String role = userService.getUserByUsername(auth.getName()).getRole().getRole();
-        System.out.println(userWantToEditRole);
-        if (role.equals("Manager Cabang") && (userWantToEditRole.equals("Kepala Retail") || userWantToEditRole.equals("Staff Cabang"))) {
+        List<RoleModel>  listRole = roleService.listRole();
+        UserModel user = userService.getUserByUsername(username);
+        String editorRole = userService.getUserByUsername(auth.getName()).getRole().getRole();
+        if (editorRole.equals("Manager Cabang") && (user.getRole().getRole().equals("Kepala Retail") || user.getRole().getRole().equals("Staff Cabang"))) {
             red.addFlashAttribute("pesanError","Role anda tidak dapat mengakses fitur ini");
             return "redirect:/user/viewalluser";
         }
+        else if (editorRole.equals("Staff Cabang")) {
+            red.addFlashAttribute("pesanError","Role anda tidak dapat mengakses fitur ini");
+            return "redirect:/user/viewalluser";
+        }
+        model.addAttribute("user", user);
+        model.addAttribute("role", listRole);
         return "form-update-user";
+    }
+
+    @PostMapping(value = "/update")
+    public String updateUserSubmit(
+        @ModelAttribute UserModel user,
+        Model model
+    ){
+        userService.updateUser(user);
+        model.addAttribute("username", user.getUsername());
+        return "update-user";
     }
 }
 

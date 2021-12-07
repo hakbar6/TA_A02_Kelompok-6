@@ -10,7 +10,7 @@
 
 <body>
 
-<nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
 <div class="container">
     <div class="card m-4 p-4">
         <div class="card-body">
@@ -29,11 +29,16 @@
                     <input class="form-control" type="text" name="username" th:value="*{username}"/>
                     <br><br>
 
-                    Role: <br>
-                    <input class="form-control" type="text" name="noTelpCabang" th:value="*{role.role}"/>
-                    <br><br>
+                    <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                            <label for="Role">Role</label>
+                            <select th:field="*{role}" class="form-control" id="Role">
+                                <option th:each="i : ${role}" th:value="${i.id}" th:text="${i.role}"></option>
+                            </select>
+                        </div>
+                    </div>
 
-                    <a class="btn btn-danger" href="/user/viewall">Cancel</a>
+                    <a class="btn btn-danger" href="/user/viewalluser">Cancel</a>
                     <button class="btn btn-success" type="submit">Submit</button>
                 </form>
             </div>

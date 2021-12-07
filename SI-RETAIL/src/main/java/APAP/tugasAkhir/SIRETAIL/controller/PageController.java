@@ -19,11 +19,11 @@ public class PageController {
         if( authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Kepala Retail")) ){
             role = "Kepala Retail";
         }
-        // else if( authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Manager Cabang")) ){
-        //     role = "Manager Cabang";
-        // }else if( authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Staff Cabang")) ) {
-        //     role = "Staff Cabang";
-        // }
+        else if( authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Manager Cabang")) ){
+            role = "Manager Cabang";
+        }else if( authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("Staff Cabang")) ) {
+            role = "Staff Cabang";
+        }
         model.addAttribute("role",role);
         return "home";
     }
