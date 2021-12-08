@@ -20,6 +20,8 @@
                 <form th:action="@{/cabang/update}" th:object="${cabang}" method="POST">
 
                     <input type="hidden" th:field="*{noCabang}" />
+                    <input type="hidden" th:field="*{user}" />
+                    <input  type="hidden" th:field="*{statusCabang}"/>
 
                     Nama Cabang: <br>
                     <input class="form-control" type="text" name="namaCabang" th:value="*{namaCabang}"/>

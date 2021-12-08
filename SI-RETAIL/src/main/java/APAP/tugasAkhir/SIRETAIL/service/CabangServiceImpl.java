@@ -1,6 +1,7 @@
 package APAP.tugasAkhir.SIRETAIL.service;
 
 import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
+import APAP.tugasAkhir.SIRETAIL.model.UserModel;
 import APAP.tugasAkhir.SIRETAIL.repository.CabangDb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,10 @@ public class CabangServiceImpl implements CabangService{
     @Autowired
     private CabangDb cabangDb;
 
-
     @Override
-    public CabangModel addCabang(CabangModel cabang) {
+    public CabangModel addCabang(CabangModel cabang, UserModel user) {
         cabang.setStatusCabang(2);
+        cabang.setUser(user);
         return cabangDb.save(cabang);
     }
 

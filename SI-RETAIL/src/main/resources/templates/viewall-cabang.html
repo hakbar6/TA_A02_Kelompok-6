@@ -13,42 +13,53 @@
 <nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
 <div class="container justify-content-center">
     <br>
-    <h2>Daftar Cabang</h2>
-    <br>
-    <table class="table">
-        <thead>
-        <tr>
-            <th class="text-center align-middle"></th>
-            <th class="text-center align-middle">Nomor Cabang</th>
-            <th class="text-center align-middle">Nama Cabang</th>
-            <th class="text-center align-middle">No Telp</th>
-            <th class="text-center align-middle">Ukuran (m<sup>2</sup>)</th>
-            <th class="text-center align-middle">Jumlah Item</th>
-            <th class="text-center align-middle">Status</th>
-            <th class="text-center align-middle"></th>
-            <th class="text-center align-middle"></th>
-            <th class="text-center align-middle"></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="cabang, iterationStatus : ${listCabang}" th:style="${iterationStatus.even} ? 'font-weight:bold;'">
-            <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
-            <td class="text-center align-middle" th:text="${cabang.noCabang}"></td>
-            <td class="text-center align-middle" th:text="${cabang.namaCabang}"></td>
-            <td class="text-center align-middle" th:text="${cabang.noTelpCabang}"></td>
-            <td class="text-center align-middle" th:text="${cabang.ukuranCabang}"></td>
-            <td class="text-center align-middle" th:text="${#lists.size(cabang.listItem)}"></td>
-            <td class="text-center align-middle" th:text="${cabang.statusCabang}"></td>
-            <td class="text-center align-middle"><a class="btn btn-info" th:href="@{/cabang/view(noCabang=${cabang.noCabang})}">Detail Cabang</a></td>
-            <div sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')">
-                <td class="text-center align-middle"><a class="btn btn-primary" th:href="@{/cabang/update/} + ${cabang.noCabang}">Update Cabang</a></td>
-                <td class="text-center align-middle"><a class="btn btn-danger" th:href="@{/cabang/delete/} + ${cabang.noCabang}">Delete Cabang</a></td>
+    <div class="card m-4 p-4 cardHome">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="m-4">
+                    <h2 class="txt-align"><b>Daftar Cabang</b></h2>
+                    <br>
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center align-middle">No urut</th>
+                            <th class="text-center align-middle">Nomor </th>
+                            <th class="text-center align-middle">Nama </th>
+                            <th class="text-center align-middle">No Telp</th>
+                            <th class="text-center align-middle">Ukuran (m<sup>2</sup>)</th>
+                            <th class="text-center align-middle">Jumlah Item</th>
+                            <th class="text-center align-middle">Status</th>
+                            <th class="text-center align-middle"></th>
+                            <th class="text-center align-middle"></th>
+                            <th class="text-center align-middle"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="cabang, iterationStatus : ${listCabang}">
+                            <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
+                            <td class="text-center align-middle" th:text="${cabang.noCabang}"></td>
+                            <td class="text-center align-middle" th:text="${cabang.namaCabang}"></td>
+                            <td class="text-center align-middle" th:text="${cabang.noTelpCabang}"></td>
+                            <td class="text-center align-middle" th:text="${cabang.ukuranCabang}"></td>
+                            <td class="text-center align-middle" th:text="${#lists.size(cabang.listItem)}"></td>
+                            <td class="text-center align-middle" th:if="${cabang.statusCabang} == 0"> Menunggu Persetujuan </td>
+                            <td class="text-center align-middle" th:if="${cabang.statusCabang} == 1"> Ditolak </td>
+                            <td class="text-center align-middle" th:if="${cabang.statusCabang} == 2"> Disetujui </td>
+                            <td class="text-center align-middle"><a class="btn btn-info btn-sm" th:href="@{/cabang/view(noCabang=${cabang.noCabang})}">Detail</a></td>
+                            <div sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')">
+                                <td class="text-center align-middle"><a class="btn btn-primary btn-sm" th:href="@{/cabang/update/} + ${cabang.noCabang}">Update</a></td>
+                                <td class="text-center align-middle"><a class="btn btn-danger btn-sm" th:href="@{/cabang/delete/} + ${cabang.noCabang}">Delete</a></td>
+                            </div>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <a class="btn btn-success" sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')" th:href="@{/cabang/create}"> Tambah Cabang </a>
+                    <a class="btn btn-primary" href="/">Kembali ke Home</a>
+                </div>
             </div>
-        </tr>
-        </tbody>
-    </table>
+        </div>
+    </div>
     <br>
-    <a class="btn btn-primary" href="/">Kembali ke Home</a>
     <br>
 </div>
 </body>
