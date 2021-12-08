@@ -55,8 +55,8 @@ public class CabangModel implements Serializable{
     private String noTelpCabang;
 
     // Many to one dengan user
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "penanggung_jawab", referencedColumnName = "id_user", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "penanggung_jawab", referencedColumnName = "id_user", nullable = true)
     private UserModel user;
 
     // One to many dengan item
