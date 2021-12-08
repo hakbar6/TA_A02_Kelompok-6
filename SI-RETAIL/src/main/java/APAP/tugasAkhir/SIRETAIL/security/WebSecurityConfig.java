@@ -20,6 +20,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/js/**").permitAll()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers("/api-docs").permitAll()
+                .antMatchers("/v3/api-docs/**").permitAll()
+                .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/user/create").hasAuthority("Kepala Retail")
                 .antMatchers("/cabang/create").hasAnyAuthority("Manager Cabang", "Kepala Retail")
                 .antMatchers("/cabang/update/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
@@ -32,7 +36,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login").permitAll()
                 .and()
-                .exceptionHandling().accessDeniedPage("/403");
+                .exceptionHandling().accessDeniedPage("/404")
+                .and()
+                .cors()
+                .and()
+                .csrf()
+                .disable();
     }
 
     @Bean
