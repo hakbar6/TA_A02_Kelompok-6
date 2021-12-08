@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -46,10 +47,22 @@ public class UserController {
     @PostMapping(value = "/create")
     public String addUserSubmit(
             @ModelAttribute UserModel user,
+            @RequestParam("password") String password,
             Model model
     ){
-        userService.addUser(user);
-        return "redirect:/";
+        if(userService.confirmPasswordWhenCreate(password).equals("none")){
+            userService.addUser(user);
+            return "redirect:/";
+        }
+        else if(userService.confirmPasswordWhenCreate(password).equals("create-user-berhasil")){
+            userService.addUser(user);
+            return "redirect:/";
+        }
+        else{
+            String message =  userService.confirmPasswordWhenCreate(password);
+            model.addAttribute("message", message);
+            return "password-salah";
+        }
     }
 
     @GetMapping(value = "/viewalluser")
@@ -85,11 +98,30 @@ public class UserController {
     @PostMapping(value = "/update")
     public String updateUserSubmit(
         @ModelAttribute UserModel user,
+        @RequestParam("oldPassword") String oldPassword,
+        @RequestParam("newPassword") String newPassword,
+        @RequestParam("confirmedNewPassword") String confirmedNewPassword,
         Model model
     ){
-        userService.updateUser(user);
-        model.addAttribute("id", user.getId_user());
-        return "update-user";
+        if(userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword).equals("none")) {
+            UserModel currentLoggedIn = userService.getUserNameLogin();
+            userService.updateUser(user, newPassword);
+            model.addAttribute("id", user.getId_user());
+            return "update-user";
+        }
+
+        else if(userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword).equals("update-password-berhasil")) {
+            UserModel currentLoggedIn = userService.getUserNameLogin();
+            userService.updateUser(user,newPassword);
+            model.addAttribute("id", user.getId_user());
+            return "update-user";
+        }
+
+        else{
+            String message =  userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword);
+            model.addAttribute("message", message);
+            return "password-salah";
+        }
     }
 }
 
