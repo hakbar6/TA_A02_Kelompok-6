@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
             for (char i : password.toCharArray()) {
                 if (Character.isDigit(i)){
                     digitInPassword = true;
-                    return "update-password-berhasil";
+                    return "create-user-berhasil";
                 }
             }
         }
@@ -72,14 +72,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserModel updateUser(UserModel userBaru) {
+    public UserModel updateUser(UserModel userBaru, String newPassword) {
         Optional<UserModel> findUserLama =  userDB.findById(userBaru.getId_user());
         UserModel userLama = new UserModel();
+        String encryptedNewPassword = encrypt(newPassword);
         if (findUserLama.isPresent()) {
             userLama = findUserLama.get();
             userLama.setNamaUser(userBaru.getNamaUser());
             userLama.setUsername(userBaru.getUsername());
             userLama.setRole(userBaru.getRole());
+            userLama.setPassword(encryptedNewPassword);
         }
         return userDB.save(userLama);
     }
@@ -115,7 +117,7 @@ public class UserServiceImpl implements UserService {
             for (char i : newPassword.toCharArray()) {
                 if (Character.isDigit(i)){
                     digitInPassword = true;
-                    return "update-password-berhasil";
+                    return "update-user-berhasil";
                 }
             }
         }
