@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -12,6 +12,7 @@
 
 <nav th:replace="fragments/fragment :: navbar('Home')"></nav>
 <div class="container">
+    <br>
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="d-flex justify-content-center">
@@ -21,7 +22,7 @@
                     <br><br>
                     <h4 class="txt-align">List of feature</h4>
                     <div class="d-flex justify-content-center">
-                        <a th:if="${role} == 'Kepala Retail'" th:href="@{/user/create}" class="mx-2 btn btn-outline-dark"> Create User </a>
+                        <a sec:authorize="hasAnyAuthority('Kepala Retail')" th:href="@{/user/create}" class="mx-2 btn btn-outline-dark"> Create User </a>
                         <a th:href="@{/user/viewalluser}" class="mx-2 btn btn-outline-dark"> View All User </a>
                     </div>
                 </div>

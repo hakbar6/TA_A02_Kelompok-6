@@ -2,11 +2,16 @@ package APAP.tugasAkhir.SIRETAIL.controller;
 
 import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
+import APAP.tugasAkhir.SIRETAIL.model.UserModel;
+import APAP.tugasAkhir.SIRETAIL.repository.UserDB;
 import APAP.tugasAkhir.SIRETAIL.service.CabangService;
 import APAP.tugasAkhir.SIRETAIL.service.ItemCabangService;
 
+import APAP.tugasAkhir.SIRETAIL.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -23,13 +28,21 @@ public class CabangController {
     @Autowired
     private CabangService cabangService;
 
+    @Qualifier("userServiceImpl")
+    @Autowired
+    private UserService userService;
+
 //    @Qualifier("itemCabangServiceImpl")
 //    @Autowired
 //    private ItemCabangService itemCabangService;
 
+
+
     // Method untuk halaman form buat cabang baru
     @GetMapping("/cabang/create")
-    public String addCabangForm(Model model) {
+    public String addCabangForm(
+            Model model
+    ) {
         CabangModel cabang = new CabangModel();
         model.addAttribute("cabang", cabang);
         return "form-add-cabang";
@@ -39,9 +52,12 @@ public class CabangController {
     @PostMapping("/cabang/create")
     public String addCabangSubmit(
             @ModelAttribute CabangModel cabang,
-            Model model
+            Model model,
+            Authentication authentication
     ) {
-        cabangService.addCabang(cabang);
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        cabangService.addCabang(cabang,user);
         model.addAttribute("noCabang", cabang.getNoCabang());
         return "add-cabang";
     }
