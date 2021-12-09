@@ -11,26 +11,63 @@
 <body>
 
 <nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
-<div class="container">
-    <div class="card m-4 p-4">
+<div class="container justify-content-center">
+    <br>
+    <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="justify-content-center">
-                <h2>Detail Cabang</h2>
+                <h2 class="text-center"><b>Detail Cabang</b></h2>
                 <br>
-                <p th:text="'Nomor Cabang: ' + ${cabang.noCabang}"></p>
-                <p th:text="'Nama Cabang: ' + ${cabang.namaCabang}"></p>
-                <p th:text="'Alamat: ' + ${cabang.alamatCabang}"></p>
-                <p th:text="'Ukuran: ' + ${cabang.ukuranCabang}"></p>
-                <p th:text="'No. Telepon Cabang: ' + ${cabang.noTeleponCabang}"></p>
-                <p th:text="'Status: ' + ${cabang.statusCabang}"></p>
+                <p><b>ID Cabang: </b><span th:text="${cabang.noCabang}"></span></p>
+                <p><b>Nama Cabang: </b><span th:text="${cabang.namaCabang}"></span></p>
+                <p><b>Alamat: </b><span th:text="${cabang.alamatCabang}"></span></p>
+                <p><b>Ukuran: </b><span th:text="${cabang.ukuranCabang}"></span></p>
+                <p><b>No. Telepon: </b><span th:text="${cabang.noTelpCabang}"></span></p>
+                <div th:if="${cabang.statusCabang} == 0"><p><b>Status: </b>Menunggu Persetujuan</p></div>
+                <div th:if="${cabang.statusCabang} == 1"><p><b>Status: </b>Ditolak</p></div>
+                <div th:if="${cabang.statusCabang} == 2"><p><b>Status: </b>Disetujui</p></div>
                 <br>
-                <div class="col">
-                    <h6>List Item:</h6>
+                <p><b>List Item:</b></p>
+                <div th:if="*{listItem.size() != 0}">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th class="text-center align-middle">No</th>
+                                <th class="text-center align-middle">Nama Item</th>
+                                <th class="text-center align-middle">Harga</th>
+                                <th class="text-center align-middle">Stok</th>
+                                <th class="text-center align-middle">Kategori</th>
+                                <th class="text-center align-middle">ID Promo</th>
+                                <th colspan="2" class="text-center align-middle">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item, iterationStatus : ${listItem}">
+                                <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
+                                <td class="text-center align-middle" th:text="${item.namaItem}"></td>
+                                <td class="text-center align-middle" th:text="${item.hargaItem}"></td>
+                                <td class="text-center align-middle" th:text="${item.stokItem}"></td>
+                                <td class="text-center align-middle" th:text="${item.kategori}"></td>
+                                <td class="text-center align-middle" th:text="${item.id_promo}"></td>
+                                <td class="text-center align-middle"><a class="btn btn-primary btn-sm" href="/">Apply &#x1F3F7;</a></td>
+                                <td class="text-center align-middle"><a class="btn btn-danger btn-sm" href="/">Delete</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+                <div th:unless="*{listItem.size() != 0}">
+                    <h2 th:text="'Tidak ada item!'"></h2>
+                </div>
+                <br>
+                <a class="btn btn-danger" th:href="@{/cabang}">Kembali</a>
+                <a class="btn btn-success" href="/">Add Item</a>
             </div>
         </div>
     </div>
 </div>
+
 <script th:replace="fragments/fragment :: src1"></script>
 <script th:replace="fragments/fragment :: src2"></script>
 <script th:replace="fragments/fragment :: src3"></script>

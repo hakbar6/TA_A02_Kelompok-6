@@ -30,14 +30,15 @@ public class CabangServiceImpl implements CabangService{
     @Override
     public void deleteCabang(Long noCabang) {
         Optional<CabangModel> cabang = cabangDb.findByNoCabang(noCabang);
-        if (cabang.isPresent()){
+        if (cabang.isPresent()) {
             CabangModel cb = cabang.get();
-            if (cb.getListItem().isEmpty()){
+
+            if (cb.getListItem().isEmpty()) {
                 cabangDb.delete(cb);
-            }else{
+            } else {
                 throw new UnsupportedOperationException();
             }
-        }else{
+        } else {
             throw new NoSuchElementException();
         }
     }
@@ -57,5 +58,9 @@ public class CabangServiceImpl implements CabangService{
         return cabangDb.findAll();
     }
 
-    // nanti ini hapus aja
+    @Override
+    public List<CabangModel> getListCabangByUser(UserModel user) {
+        return cabangDb.findAllByUser(user);
+    }
+
 }
