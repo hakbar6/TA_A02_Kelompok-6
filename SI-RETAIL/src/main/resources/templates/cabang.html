@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Manage Cabang </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
+<div class="container justify-content-center">
+    <br>
+    <div class="card m-4 p-4 cardHome">
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div class="m-3">
+                    <h2 class="txt-align"> <b>Daftar fitur CABANG SI-RETAIL</b> </h2>
+                    <br><br>
+                    <div class="d-flex justify-content-center">
+                        <a sec:authorize="hasAnyAuthority('Kepala Retail')" th:href="@{/cabang/daftarPermintaan}" class="mx-2 btn btn-danger"> Manage Permintaan </a>
+                        <a th:href="@{/cabang/daftarCabang}" class="mx-2 btn btn-primary"> Lihat Semua Cabang </a>
+                        <a class="mx-2 btn btn-success" sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')" th:href="@{/cabang/create}">Tambah Cabang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
+
+<script th:replace="fragments/fragment :: src1"></script>
+<script th:replace="fragments/fragment :: src2"></script>
+<script th:replace="fragments/fragment :: src3"></script>
+
+</body>
+</html>

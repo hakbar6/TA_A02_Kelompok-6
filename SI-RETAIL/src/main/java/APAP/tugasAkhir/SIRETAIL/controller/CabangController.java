@@ -43,7 +43,8 @@ public class CabangController {
         return "form-add-cabang";
     }
 
-    // Method untuk submisi form buat cabang baru
+    // Method untuk submit form buat cabang baru
+    // pekerjaan harakan
     @PostMapping("/cabang/create")
     public String addCabangSubmit(
             @ModelAttribute CabangModel cabang,
@@ -67,6 +68,43 @@ public class CabangController {
         model.addAttribute("cabang", cabang);
         return "form-update-cabang";
     }
+
+    @PostMapping("/cabang/accept")
+    public String acceptPermintaan(
+            Authentication authentication,
+            Model model,
+            @RequestParam("noCabang") Long noCabang
+    ){
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        CabangModel cabang = cabangService.acceptCabang(noCabang, user);
+//        model.addAttribute("cabang",cabang);
+        return "redirect:/cabang/daftarPermintaan";
+    }
+
+    @PostMapping("/cabang/reject")
+    public String rejectPermintaan(
+            Authentication authentication,
+            Model model,
+            @RequestParam("noCabang") Long noCabang
+    ){
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        CabangModel cabang = cabangService.rejectCabang(noCabang, user);
+//        model.addAttribute("cabang",cabang);
+        return "redirect:/cabang/daftarPermintaan";
+    }
+
+    // Method untuk menampilkan halaman daftar permintaan
+    @GetMapping("/cabang/daftarPermintaan")
+    public String viewAllPermintaan(
+            Model model
+    ){
+        List<CabangModel> permintaan = cabangService.getListPermintaan();
+        model.addAttribute("permintaan",permintaan);
+        return "viewall-permintaan";
+    }
+    // pekerjaan harakan tutup
 
     // Method untuk submisi form ubah informasi cabang
     @PostMapping("/cabang/update")
@@ -102,8 +140,16 @@ public class CabangController {
         }
     }
 
-    // Method untuk menampilkan daftar cabang
+    // Method untuk merujuk ke halaman manage cabang
     @GetMapping("/cabang")
+    public String manageCabang(
+            Model model
+    ){
+        return "cabang";
+    }
+
+    // Method untuk menampilkan halaman daftar cabang
+    @GetMapping("/cabang/daftarCabang")
     public String viewAllCabang(Model model, Authentication authentication) {
         String username = ((UserDetails) authentication.getPrincipal()).getUsername();
         UserModel user = userService.getUserByUsername(username);
@@ -118,6 +164,7 @@ public class CabangController {
 
         return "viewall-cabang";
     }
+
 
     // Method untuk menampilkan detail cabang
     @GetMapping("/cabang/view")

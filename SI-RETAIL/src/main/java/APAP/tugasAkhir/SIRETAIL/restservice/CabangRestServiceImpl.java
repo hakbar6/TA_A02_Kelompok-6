@@ -15,6 +15,7 @@ public class CabangRestServiceImpl implements CabangRestService{
     @Autowired
     private CabangDb cabangDb;
 
+    // pekerjaan harakan
     @Override
     public CabangModel createCabangAPI(CabangDTO cabangDTO) {
         CabangModel cabang = new CabangModel();
@@ -25,4 +26,5 @@ public class CabangRestServiceImpl implements CabangRestService{
         cabang.setStatusCabang(0);
         return cabangDb.save(cabang);
     }
+    // pekerjaan harakan tutup
 }
