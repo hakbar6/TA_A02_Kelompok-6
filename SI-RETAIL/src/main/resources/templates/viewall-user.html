@@ -25,32 +25,34 @@
                     </div>
                 </div>
                 <br>
-                <table class="table">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th class="text-center align-middle"></th>
-                        <th class="text-center align-middle">Id User</th>
-                        <th class="text-center align-middle">Nama</th>
-                        <th class="text-center align-middle">Username</th>
-                        <th class="text-center align-middle">Role</th>
-                        <th class="text-center align-middle"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="user, iterationStatus : ${userList}">
-                        <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
-                        <td class="text-center align-middle" th:text="${user.id_user}"></td>
-                        <td class="text-center align-middle" th:text="${user.namaUser}"></td>
-                        <td class="text-center align-middle" th:text="${user.username}"></td>
-                        <td class="text-center align-middle" th:text="${user.role.getRole()}"></td>
-                        <td class="text-center align-middle">
-                            <a class="btn btn-primary btn-primary" th:href="@{/user/update/} + ${user.username}">Ubah</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center align-middle"></th>
+                            <th class="text-center align-middle">Id User</th>
+                            <th class="text-center align-middle">Nama</th>
+                            <th class="text-center align-middle">Username</th>
+                            <th class="text-center align-middle">Role</th>
+                            <th class="text-center align-middle"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user, iterationStatus : ${userList}">
+                            <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
+                            <td class="text-center align-middle" th:text="${user.id_user}"></td>
+                            <td class="text-center align-middle" th:text="${user.namaUser}"></td>
+                            <td class="text-center align-middle" th:text="${user.username}"></td>
+                            <td class="text-center align-middle" th:text="${user.role.getRole()}"></td>
+                            <td class="text-center align-middle">
+                                <a class="btn btn-primary btn-primary" th:href="@{/user/update/} + ${user.username}">Ubah</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
                 <div>
-                    <a class="btn btn-primary" href="/">Kembali ke Home</a>
+                    <a class="btn btn-primary" href="/">Home</a>
                 </div>
             </div>
         </div>
@@ -60,5 +62,9 @@
     <br>
     <br>
 </div>
+<script th:replace="fragments/fragment :: src1"></script>
+<script th:replace="fragments/fragment :: src2"></script>
+<script th:replace="fragments/fragment :: src3"></script>
+
 </body>
 </html>
