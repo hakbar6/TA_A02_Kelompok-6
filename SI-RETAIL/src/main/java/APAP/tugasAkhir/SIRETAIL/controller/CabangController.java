@@ -48,7 +48,7 @@ public class CabangController {
         return "form-add-cabang";
     }
 
-    // Method untuk submisi form buat cabang baru
+    // Method untuk submit form buat cabang baru
     @PostMapping("/cabang/create")
     public String addCabangSubmit(
             @ModelAttribute CabangModel cabang,
@@ -102,14 +102,23 @@ public class CabangController {
         return "delete-cabang";
     }
 
-    // Method untuk menampilkan daftar cabang
+    // Method untuk menampilkan halaman daftar cabang
     @GetMapping("/cabang")
-    public String viewAllCabang(Model model) {
-        List<CabangModel> listCabang = cabangService.getListCabang();
-        model.addAttribute("listCabang", listCabang);
+    public String viewAllCabang(Model model, Authentication authentication) {
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+
+        if (user.getRole().getRole().equals("Manager Cabang")) {
+            List<CabangModel> listCabang = cabangService.getListCabangByUser(user);
+            model.addAttribute("listCabang", listCabang);
+        } else {
+            List<CabangModel> listCabang = cabangService.getListCabang();
+            model.addAttribute("listCabang", listCabang);
+        }
 
         return "viewall-cabang";
     }
+
 
     // Method untuk menampilkan detail cabang
     @GetMapping("/cabang/view")

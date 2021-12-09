@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
-    <title>Home</title>
+    <title>Daftar Cabang</title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
 <body>
-<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
-<div class="container">
+
+<nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
+<div class="container justify-content-center">
     <br>
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="m-4">
-                    <h2><b>Selamat datang di SIRETAIL</b></h2>
-                    <h3 th:text="'Hello ' +${#httpServletRequest.remoteUser} +'! sebagai ' +${role}"></h3>
-                    <br><br>
-                    <h4 class="txt-align">List of feature</h4>
+                    <h2 class="txt-align"> Daftar fitur CABANG SI-Retail </h2>
                     <div class="d-flex justify-content-center">
-                        <a sec:authorize="hasAnyAuthority('Kepala Retail')" th:href="@{/user/create}" class="mx-2 btn btn-outline-dark"> Create User </a>
-                        <a th:href="@{/user/viewalluser}" class="mx-2 btn btn-outline-dark"> View All User </a>
+                        <a sec:authorize="hasAnyAuthority('Kepala Retail')" th:href="@{/cabang/daftarPermintaan}" class="mx-2 btn btn-danger"> Daftar Permintaan </a>
+                        <a th:href="@{/cabang/viewall}" class="mx-2 btn btn-primary"> Daftar Cabang </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <br>
+    <br>
 </div>
 
 <script th:replace="fragments/fragment :: src1"></script>
