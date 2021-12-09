@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Form Tambah Cabang</title>
+    <title>Tambah Cabang</title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
@@ -11,11 +11,12 @@
 <body>
 
 <nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
-<div class="container">
-    <div class="card m-4 p-4">
+<div class="container justify-content-center">
+    <br>
+    <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="justify-content-center">
-                <h2><b>Form Tambah Cabang</b></h2>
+                <h2 class="text-center"><b>Form Tambah Cabang</b></h2>
                 <br>
                 <form th:action="@{/cabang/create}" th:object="${cabang}" method="POST">
                     Nama Cabang: <br>
@@ -34,7 +35,7 @@
                     <input required class="form-control" type="number" name="ukuranCabang"/>
                     <br><br>
 
-                    <a class="btn btn-danger" href="/">Cancel</a>
+                    <a class="btn btn-danger" th:href="@{/cabang}">Cancel</a>
                     <button class="btn btn-success" type="submit">Submit</button>
                 </form>
             </div>

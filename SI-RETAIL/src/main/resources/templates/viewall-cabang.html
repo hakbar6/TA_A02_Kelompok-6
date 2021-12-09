@@ -23,16 +23,14 @@
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
-                        <th class="text-center align-middle">No urut</th>
-                        <th class="text-center align-middle">Nomor </th>
-                        <th class="text-center align-middle">Nama </th>
+                        <th class="text-center align-middle">No</th>
+                        <th class="text-center align-middle">ID Cabang</th>
+                        <th class="text-center align-middle">Nama</th>
                         <th class="text-center align-middle">No Telp</th>
                         <th class="text-center align-middle">Ukuran (m<sup>2</sup>)</th>
                         <th class="text-center align-middle">Jumlah Item</th>
                         <th class="text-center align-middle">Status</th>
-                        <th class="text-center align-middle"></th>
-                        <th class="text-center align-middle"></th>
-                        <th class="text-center align-middle"></th>
+                        <th colspan="3" class="text-center align-middle">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -43,22 +41,23 @@
                         <td class="text-center align-middle" th:text="${cabang.noTelpCabang}"></td>
                         <td class="text-center align-middle" th:text="${cabang.ukuranCabang}"></td>
                         <td class="text-center align-middle" th:text="${#lists.size(cabang.listItem)}"></td>
-                        <td class="text-center align-middle" th:if="${cabang.statusCabang} == 0"> Menunggu Persetujuan </td>
-                        <td class="text-center align-middle" th:if="${cabang.statusCabang} == 1"> Ditolak </td>
-                        <td class="text-center align-middle" th:if="${cabang.statusCabang} == 2"> Disetujui </td>
+                        <td class="text-center align-middle" th:if="${cabang.statusCabang} == 0">Menunggu Persetujuan</td>
+                        <td class="text-center align-middle" th:if="${cabang.statusCabang} == 1">Ditolak</td>
+                        <td class="text-center align-middle" th:if="${cabang.statusCabang} == 2">Disetujui</td>
                         <td class="text-center align-middle"><a class="btn btn-info btn-sm" th:href="@{/cabang/view(noCabang=${cabang.noCabang})}">Detail</a></td>
-                        <div sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')">
-                            <td class="text-center align-middle"><a class="btn btn-primary btn-sm" th:href="@{/cabang/update/} + ${cabang.noCabang}">Update</a></td>
-                            <td class="text-center align-middle"><a class="btn btn-danger btn-sm" th:href="@{/cabang/delete/} + ${cabang.noCabang}">Delete</a></td>
-                        </div>
+                        <td class="text-center align-middle"><a class="btn btn-primary btn-sm" th:href="@{/cabang/update/} + ${cabang.noCabang}">Update</a></td>
+                        <td class="text-center align-middle"><a class="btn btn-danger btn-sm" th:href="@{/cabang/delete/} + ${cabang.noCabang}">Delete</a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div>
-                <br><br>
-                <a class="btn btn-success" sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')" th:href="@{/cabang/create}"> Add Cabang </a>
+                <div>
+                    <p style="color: darkred;" th:text="${message}"></p>
+                </div>
+                <br>
                 <a class="btn btn-primary" href="/">Home</a>
+                <a class="btn btn-success" sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')" th:href="@{/cabang/create}">Add Cabang</a>
             </div>
         </div>
     </div>
