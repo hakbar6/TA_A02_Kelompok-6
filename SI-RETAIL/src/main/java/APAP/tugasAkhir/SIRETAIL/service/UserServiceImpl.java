@@ -139,8 +139,7 @@ public class UserServiceImpl implements UserService {
 
         UserModel user = getUserNameLogin();
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedOldPass = passwordEncoder.encode(oldPassword);
-        if (!hashedOldPass.equals(user.getPassword())){
+        if (!(passwordEncoder.matches(oldPassword, user.getPassword()))){
             error = "Password lama yang anda masukkan tidak sama";
         }
         return error;
