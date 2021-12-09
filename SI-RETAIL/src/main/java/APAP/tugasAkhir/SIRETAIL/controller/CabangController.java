@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;
@@ -31,11 +32,6 @@ public class CabangController {
     @Qualifier("userServiceImpl")
     @Autowired
     private UserService userService;
-
-//    @Qualifier("itemCabangServiceImpl")
-//    @Autowired
-//    private ItemCabangService itemCabangService;
-
 
     // Method untuk halaman form buat cabang baru
     @GetMapping("/cabang/create")
@@ -87,18 +83,23 @@ public class CabangController {
     @RequestMapping(value = "/cabang/delete/{noCabang}", method = RequestMethod.GET)
     public String deleteCabang(
             @PathVariable Long noCabang,
-            Model model
+            Model model,
+            RedirectAttributes redirectAttributes
     ) {
         CabangModel cabang = cabangService.getCabang(noCabang);
 
+        String message;
+
         model.addAttribute("noCabang", cabang.getNoCabang());
 
-        if (cabang == null) {
-            return "no-cabang";
+        if ((cabang.getStatusCabang() == 1 || cabang.getStatusCabang() == 2) & cabang.getListItem().isEmpty()) {
+            cabangService.deleteCabang(noCabang);
+            return "delete-cabang";
+        } else {
+            message = "Cabang masih memiliki item atau sedang menunggu persetujuan!";
+            redirectAttributes.addFlashAttribute("message", message);
+            return "redirect:/cabang";
         }
-
-        cabangService.deleteCabang(noCabang);
-        return "delete-cabang";
     }
 
     // Method untuk menampilkan daftar cabang
@@ -122,7 +123,10 @@ public class CabangController {
             return "no-cabang";
         }
 
+        List<ItemCabangModel> listItem = cabang.getListItem();
+
         model.addAttribute("cabang", cabang);
+        model.addAttribute("listItem", listItem);
 
         return "view-cabang";
     }
