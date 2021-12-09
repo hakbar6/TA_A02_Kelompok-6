@@ -37,7 +37,6 @@ public class CabangController {
 //    private ItemCabangService itemCabangService;
 
 
-
     // Method untuk halaman form buat cabang baru
     @GetMapping("/cabang/create")
     public String addCabangForm(
