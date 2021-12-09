@@ -58,5 +58,9 @@ public class CabangServiceImpl implements CabangService{
         return cabangDb.findAll();
     }
 
-    // nanti ini hapus aja
+    @Override
+    public List<CabangModel> getListCabangByUser(UserModel user) {
+        return cabangDb.findAllByUser(user);
+    }
+
 }

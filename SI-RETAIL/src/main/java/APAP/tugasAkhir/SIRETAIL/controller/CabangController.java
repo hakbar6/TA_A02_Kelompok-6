@@ -96,7 +96,7 @@ public class CabangController {
             cabangService.deleteCabang(noCabang);
             return "delete-cabang";
         } else {
-            message = "Cabang masih memiliki item atau sedang menunggu persetujuan!";
+            message = "Cabang masih memiliki item!";
             redirectAttributes.addFlashAttribute("message", message);
             return "redirect:/cabang";
         }
@@ -104,9 +104,17 @@ public class CabangController {
 
     // Method untuk menampilkan daftar cabang
     @GetMapping("/cabang")
-    public String viewAllCabang(Model model) {
-        List<CabangModel> listCabang = cabangService.getListCabang();
-        model.addAttribute("listCabang", listCabang);
+    public String viewAllCabang(Model model, Authentication authentication) {
+        String username = ((UserDetails) authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+
+        if (user.getRole().getRole().equals("Manager Cabang")) {
+            List<CabangModel> listCabang = cabangService.getListCabangByUser(user);
+            model.addAttribute("listCabang", listCabang);
+        } else {
+            List<CabangModel> listCabang = cabangService.getListCabang();
+            model.addAttribute("listCabang", listCabang);
+        }
 
         return "viewall-cabang";
     }
