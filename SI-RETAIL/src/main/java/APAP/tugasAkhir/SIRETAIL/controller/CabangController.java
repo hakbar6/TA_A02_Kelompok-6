@@ -92,7 +92,7 @@ public class CabangController {
 
         model.addAttribute("noCabang", cabang.getNoCabang());
 
-        if ((cabang.getStatusCabang() == 1 || cabang.getStatusCabang() == 2) & cabang.getListItem().isEmpty()) {
+        if (cabang.getListItem().isEmpty()) {
             cabangService.deleteCabang(noCabang);
             return "delete-cabang";
         } else {
