@@ -97,21 +97,20 @@ public class UserController {
 
     @PostMapping(value = "/update")
     public String updateUserSubmit(
+        @ModelAttribute UserModel user,
         @RequestParam("oldPassword") String oldPassword,
         @RequestParam("newPassword") String newPassword,
         @RequestParam("confirmedNewPassword") String confirmedNewPassword,
-        @PathVariable String username,
         Model model
     ){
-        UserModel user = userService.getUserByUsername(username);
-        if(userService.confirmPasswordWhenUpdate(username, oldPassword, newPassword, confirmedNewPassword).equals("none")) {
+        if(userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword).equals("none")) {
             UserModel currentLoggedIn = userService.getUserNameLogin();
             userService.updateUser(user, newPassword);
             model.addAttribute("id", user.getId_user());
             return "update-user";
         }
 
-        else if(userService.confirmPasswordWhenUpdate(username, oldPassword, newPassword, confirmedNewPassword).equals("update-password-berhasil")) {
+        else if(userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword).equals("update-password-berhasil")) {
             UserModel currentLoggedIn = userService.getUserNameLogin();
             userService.updateUser(user,newPassword);
             model.addAttribute("id", user.getId_user());
@@ -119,7 +118,7 @@ public class UserController {
         }
 
         else{
-            String message =  userService.confirmPasswordWhenUpdate(username, oldPassword, newPassword, confirmedNewPassword);
+            String message =  userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword);
             model.addAttribute("message", message);
             return "password-salah";
         }
