@@ -12,6 +12,6 @@ public interface UserService {
     UserModel getUserByUsername(String name);
     String confirmPasswordWhenCreate (String password);
     UserModel getUserNameLogin();
-    String confirmPasswordWhenUpdate (String oldPassword, String newPassword, String confirmedNewPassword);
+    String confirmPasswordWhenUpdate (String username, String oldPassword, String newPassword, String confirmedNewPassword);
     void updatePassword(UserModel user, String newPassword);
 }

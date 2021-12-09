@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String confirmPasswordWhenUpdate (String oldPassword, String newPassword, String confirmedNewPassword){
+    public String confirmPasswordWhenUpdate (String username, String oldPassword, String newPassword, String confirmedNewPassword){
         String error = "none";
         boolean digitInPassword = false;
         boolean passwordContainsLetter = false;
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
             error = "Panjang password harus terdiri dari minimal 8 karakter (huruf dan angka). Silahkan mengulang proses update password.";
         }
 
-        UserModel user = getUserNameLogin();
+        UserModel user = getUserByUsername(username);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!(passwordEncoder.matches(oldPassword, user.getPassword()))){
             error = "Password lama yang anda masukkan tidak sama";
