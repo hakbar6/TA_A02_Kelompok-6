@@ -110,7 +110,7 @@ public class UserController {
             return "update-user";
         }
 
-        else if(userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword).equals("update-password-berhasil")) {
+        else if(userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword).equals("update-user-berhasil")) {
             UserModel currentLoggedIn = userService.getUserNameLogin();
             userService.updateUser(user,newPassword);
             model.addAttribute("id", user.getId_user());
