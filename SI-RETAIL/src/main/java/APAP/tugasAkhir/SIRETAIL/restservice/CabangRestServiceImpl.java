@@ -17,7 +17,6 @@ public class CabangRestServiceImpl implements CabangRestService{
 
     @Override
     public CabangModel createCabangAPI(CabangDTO cabangDTO) {
-        System.out.println("masuk");
         CabangModel cabang = new CabangModel();
         cabang.setNamaCabang(cabangDTO.namaCabang);
         cabang.setAlamatCabang(cabangDTO.alamatCabang);
