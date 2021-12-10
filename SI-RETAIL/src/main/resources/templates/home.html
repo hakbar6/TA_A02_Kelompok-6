@@ -16,6 +16,9 @@
         <div class="card-body">
             <div class="d-flex justify-content-center">
                 <div class="m-4">
+                    <div th:if=${pesan}>
+                        <h3 style="color:green" th:text="${pesan}"></h3>
+                    </div>
                     <h2><b>Selamat datang di SIRETAIL</b></h2>
                     <h3 th:text="'Hello ' +${#httpServletRequest.remoteUser} +'! sebagai ' +${role}"></h3>
                     <br><br>

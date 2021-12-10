@@ -15,7 +15,13 @@
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div>
-                <h2 class="txt-align"><b>Tambah User</b></h2>
+                <div>
+                    <h2 class="txt-align"><b>Tambah User</b></h2>
+                    <div class="alert" th:if=${pesanError}>
+                        <br>
+                        <div th:text="${pesanError}" class="alert alert-danger" onclick="this.parentElement.style.display='none';"></div>
+                    </div>
+                </div>
                 <br><br>
                 <form th:action="@{/user/create}" th:object="${user}" method="POST">
 
@@ -39,10 +45,8 @@
                             </select>
                         </div>
                     </div>
-                    <br><br>
-                    <button class="btn btn-primary" name="save" type="submit">Save</button>
-                    <br><br>
-                    <a class="btn btn-primary" th:href="@{/}">Cancel</a>
+                    <button class="btn btn-success" name="save" type="submit">Submit</button>
+                    <a class="btn btn-primary btn-danger" th:href="@{/}">Cancel</a>
                 </form>
             </div>
         </div>

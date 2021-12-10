@@ -40,9 +40,24 @@ public class UserServiceImpl implements UserService {
         boolean passwordContainsdigit = false;
         boolean passwordContainsspecial = false;
 
-        passwordContainsLetter = password.matches(".*[A-Za-z]+.*");
-        passwordContainsdigit = password.matches("[0-9]");
-        passwordContainsspecial = password.matches("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+        passwordContainsLetter = password.matches(".*[A-Za-z].*");
+        passwordContainsdigit = password.matches(".*[0-9].*");
+        passwordContainsspecial = password.matches(".*[!@#$%&*()_+.=|<>?{}\\[\\]~-].*");
+
+        if((password.length() <= 7)){
+            error = "Panjang password harus terdiri dari minimal 8 karakter (huruf dan angka)";
+            return error;
+        }
+
+        if(passwordContainsLetter == false){
+            error = "Password harus terdiri atas minimal 1 buah huruf, Proses pembuatan password dibatalkan";
+            return error;
+        }
+
+        if(passwordContainsspecial == false){
+            error = "Password harus terdiri atas minimal 1 buah karakter spesial, Proses pembuatan password dibatalkan";
+            return error;
+        }
 
         if(password.length()>=8){
             for (char i : password.toCharArray()) {
@@ -53,21 +68,11 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        if(passwordContainsLetter == false){
-            error = "Password harus terdiri atas minimal 1 buah huruf, Proses pembuatan password dibatalkan";
-        }
-
         if(passwordContainsdigit == false){
             error = "Password harus terdiri atas minimal 1 buah angka, Proses pembuatan password dibatalkan";
+            return error;
         }
 
-        if(passwordContainsspecial == false){
-            error = "Password harus terdiri atas minimal 1 buah karakter spesial, Proses pembuatan password dibatalkan";
-        }
-
-        if((password.length() <= 7)){
-            error = "Panjang password harus terdiri dari minimal 8 karakter (huruf dan angka). Silahkan mengulang proses update password.";
-        }
         return error;
     }
 
@@ -94,54 +99,65 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String confirmPasswordWhenUpdate (String oldPassword, String newPassword, String confirmedNewPassword){
+    public String confirmPasswordWhenUpdate (String username, String oldPassword, String newPassword, String confirmedNewPassword){
         String error = "none";
         boolean digitInPassword = false;
         boolean passwordContainsLetter = false;
         boolean passwordContainsdigit = false;
-        boolean passwordContainsspecial = false;
+        boolean passwordContainsSpecial = false;
 
         passwordContainsLetter = newPassword.matches(".*[A-Za-z]+.*");
         passwordContainsdigit = newPassword.matches("[0-9]");
-        passwordContainsspecial = newPassword.matches("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+        passwordContainsSpecial = newPassword.matches(".*[!@#$%&*()_+.=|<>?{}\\[\\]~-].*");
 
-        if(newPassword.equals(oldPassword)){
-            error = "Password baru dan password lama tidak boleh sama, proses update password dibatalkan";
-        }
+        System.out.println(oldPassword);
 
-        if(!newPassword.equals(confirmedNewPassword)){
-            error = "Password baru dan konfirmasi password baru tidak sama, proses update password dibatalkan";
-        }
-        
-        if(newPassword.length()>=8){
-            for (char i : newPassword.toCharArray()) {
-                if (Character.isDigit(i)){
-                    digitInPassword = true;
-                    return "update-user-berhasil";
-                }
-            }
-        }
-
-        if(passwordContainsLetter == false){
-            error = "Password harus terdiri atas minimal 1 buah huruf, Proses pembuatan password dibatalkan";
-        }
-
-        if(passwordContainsdigit == false){
-            error = "Password harus terdiri atas minimal 1 buah angka, Proses pembuatan password dibatalkan";
-        }
-
-        if(passwordContainsspecial == false){
-            error = "Password harus terdiri atas minimal 1 buah karakter spesial, Proses pembuatan password dibatalkan";
-        }
-        if((newPassword.length() <= 7)){
-            error = "Panjang password harus terdiri dari minimal 8 karakter (huruf dan angka). Silahkan mengulang proses update password.";
-        }
-
-        UserModel user = getUserNameLogin();
+        UserModel user = userDB.findByUsername(username);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         if (!(passwordEncoder.matches(oldPassword, user.getPassword()))){
             error = "Password lama yang anda masukkan tidak sama";
+            return error;
         }
+
+        if(newPassword.equals(oldPassword)){
+            error = "Password baru dan password lama tidak boleh sama, proses update password dibatalkan";
+            return error;      
+        }
+
+        if((newPassword.length() <= 7)){
+            error = "Panjang password harus terdiri dari minimal 8 karakter (huruf dan angka). Silahkan mengulang proses update password.";
+            return error;
+        }
+
+        else{
+            if(!newPassword.equals(confirmedNewPassword)){
+                error = "Password baru dan konfirmasi password baru tidak sama, proses update password dibatalkan";
+                return error;
+            }
+
+            if(passwordContainsLetter == false){
+                error = "Password harus terdiri atas minimal 1 buah huruf, Proses pembuatan password dibatalkan";
+                return error;
+            }
+
+            if(passwordContainsSpecial == false){
+                error = "Password harus terdiri atas minimal 1 buah karakter spesial, Proses pembuatan password dibatalkan";
+                return error;
+            }
+
+            for (char i : newPassword.toCharArray()) {
+                if (Character.isDigit(i)){
+                    passwordContainsdigit = true;
+                    return "update-user-berhasil";
+                }
+            }
+
+            if(passwordContainsdigit == false){
+                error = "Password harus terdiri atas minimal 1 buah angka, Proses pembuatan password dibatalkan";
+                return error;
+            }
+        }
+
         return error;
     }
 

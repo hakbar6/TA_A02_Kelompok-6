@@ -48,20 +48,23 @@ public class UserController {
     public String addUserSubmit(
             @ModelAttribute UserModel user,
             @RequestParam("password") String password,
+            RedirectAttributes red,
             Model model
     ){
         if(userService.confirmPasswordWhenCreate(password).equals("none")){
             userService.addUser(user);
+            red.addFlashAttribute("pesan", "User baru berhasil dibuat");
             return "redirect:/";
         }
         else if(userService.confirmPasswordWhenCreate(password).equals("create-user-berhasil")){
             userService.addUser(user);
+            red.addFlashAttribute("pesan", "User baru berhasil dibuat");
             return "redirect:/";
         }
         else{
             String message =  userService.confirmPasswordWhenCreate(password);
-            model.addAttribute("message", message);
-            return "password-salah";
+            red.addFlashAttribute("pesanError", message);
+            return "redirect:/user/create";
         }
     }
 
@@ -101,16 +104,18 @@ public class UserController {
         @RequestParam("oldPassword") String oldPassword,
         @RequestParam("newPassword") String newPassword,
         @RequestParam("confirmedNewPassword") String confirmedNewPassword,
+        RedirectAttributes red,
         Model model
     ){
-        if(userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword).equals("none")) {
+        String username = user.getUsername();
+        if(userService.confirmPasswordWhenUpdate(username, oldPassword, newPassword, confirmedNewPassword).equals("none")) {
             UserModel currentLoggedIn = userService.getUserNameLogin();
             userService.updateUser(user, newPassword);
             model.addAttribute("id", user.getId_user());
             return "update-user";
         }
 
-        else if(userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword).equals("update-user-berhasil")) {
+        else if(userService.confirmPasswordWhenUpdate(username, oldPassword, newPassword, confirmedNewPassword).equals("update-user-berhasil")) {
             UserModel currentLoggedIn = userService.getUserNameLogin();
             userService.updateUser(user,newPassword);
             model.addAttribute("id", user.getId_user());
@@ -118,9 +123,9 @@ public class UserController {
         }
 
         else{
-            String message =  userService.confirmPasswordWhenUpdate(oldPassword, newPassword, confirmedNewPassword);
-            model.addAttribute("message", message);
-            return "password-salah";
+            String message =  userService.confirmPasswordWhenUpdate(username, oldPassword, newPassword, confirmedNewPassword);
+            red.addFlashAttribute("pesanError", message);
+            return "redirect:/user/update/"+user.getUsername();
         }
     }
 }
