@@ -1,5 +1,6 @@
 package APAP.tugasAkhir.SIRETAIL.service;
 
+import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
 import APAP.tugasAkhir.SIRETAIL.repository.ItemCabangDb;
 import APAP.tugasAkhir.SIRETAIL.rest.BaseResponse;
 import APAP.tugasAkhir.SIRETAIL.rest.ItemDTO;
@@ -41,6 +42,32 @@ public class ItemCabangServiceImpl implements ItemCabangService{
 
         BaseResponse<List<ItemDTO>> itemDTOS = response.block();
         return itemDTOS.getResult().stream().collect(Collectors.toList());
+    }
+
+    @Override
+    public ItemDTO getItem(String uuid) {
+        // TODO Auto-generated method stub
+        WebClient webClient = WebClient.builder().baseUrl("https://si-item.herokuapp.com").build();
+        Mono<BaseResponse<ItemDTO>> response = webClient.get().uri("/api/item/"+uuid)
+                .accept(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<BaseResponse<ItemDTO>>(){});
+        ItemDTO itemDTO = response.block().getResult();
+        System.out.println(itemDTO.nama);
+        return itemDTO;
+    }
+
+    @Override
+    public void addItem(ItemCabangModel item) {
+        // TODO Auto-generated method stub
+        itemCabangDb.save(item);        
+    }
+
+    @Override
+    public void updateSiItem(String uuid, int newStock) {
+        // TODO Auto-generated method stub
+        WebClient webClient = WebClient.builder().baseUrl("https://si-item.herokuapp.com").build();
+        
     }
 
 

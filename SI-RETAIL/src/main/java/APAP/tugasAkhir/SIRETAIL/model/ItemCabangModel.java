@@ -24,7 +24,6 @@ import java.io.Serializable;
 @Getter
 @Entity
 @Table(name = "item")
-
 public class ItemCabangModel implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
