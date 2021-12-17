@@ -76,7 +76,7 @@ public class ItemCabangServiceImpl implements ItemCabangService{
     }
 
     @Override
-    public ItemCabangModel getItemInCabang (CabangModel cabang, String uuid){
+    public ItemCabangModel getItemInCabang (String uuid, CabangModel cabang){
         List<ItemCabangModel> listItemCabang = cabang.getListItem();
         for(ItemCabangModel item : listItemCabang){
             if(item.getUuid().equals(uuid)){
@@ -108,6 +108,19 @@ public class ItemCabangServiceImpl implements ItemCabangService{
         }
     }
 
+    @Override
+    public ItemDTO updateStock(String uuid, int stok){
+        ItemDTO updatedStock = new ItemDTO();
+        updatedStock.setStok(stok);
+        try{
+            ItemDTO response = webClient.put().uri("/api/item/" + uuid).syncBody(updatedStock).retrieve().bodyToMono(ItemDTO.class).block();
+            return response;
+        } catch(Exception exc){
+            return null;
+        }
+    }
+
+    //ini gadipake
     @Override// Cek kecukupan barang, sekalian update
     public boolean penggunaanBarang (String uuid, int penggunaan, Long noCabang){
         WebClient webClient = WebClient.builder().baseUrl("https://si-item.herokuapp.com").build();
@@ -149,5 +162,22 @@ public class ItemCabangServiceImpl implements ItemCabangService{
     @Override
     public List<ItemCabangModel> getListItem(){
         return itemCabangDb.findAll();
+    }
+
+    //coba pakai yang ini
+    @Override
+    public List<ItemCabangModel> getAllListItem (List<ItemDTO> listItem, CabangModel cabang){
+        List<ItemCabangModel> listItemInCabang = new ArrayList<>();
+        for (ItemDTO item : listItem){
+            ItemCabangModel itemCabang = new ItemCabangModel();
+            itemCabang.setCabang(cabang);
+            itemCabang.setUuid(item.uuid);
+            itemCabang.setNamaItem(item.nama);
+            itemCabang.setStokItem(item.stok);
+            itemCabang.setKategori(item.kategori);
+            itemCabang.setId_promo(1);
+            listItemInCabang.add(itemCabang);
+        }
+        return listItemInCabang;
     }
 }

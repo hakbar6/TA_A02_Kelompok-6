@@ -53,9 +53,9 @@ public class ItemController {
         model.addAttribute("noCabang", noCabang);
         return "form-add-item";
     }
-
-    @PostMapping(value = "/cabang/addItem/{noCabang}", params = { "save" }) //
-    public String addItemPost (
+/*
+    @PostMapping(value = "/cabang/addItem2/{noCabang}", params = { "save" }) //
+    public String addItemPost2 (
         @ModelAttribute ItemCabangModel item,
         @RequestParam("namaItem") String namaItem,
         @PathVariable Long noCabang,
@@ -71,6 +71,45 @@ public class ItemController {
         }
         model.addAttribute("cabang", item.getCabang());
         model.addAttribute("nama", itemSelected.getNamaItem());
+        return "add-item";
+    }
+*/ //ver 17/12/2021 pagi
+    @PostMapping(value = "/cabang/addItem/{noCabang}", params = { "save" }) //
+    public String addItemPost (
+        @ModelAttribute ItemCabangModel item,
+        @RequestParam("namaItem") String namaItem,
+        @PathVariable Long noCabang,
+        String uuid, Model model){
+        
+        List<ItemDTO> listItem = itemCabangService.getAllItem();
+        ItemCabangModel itemSelected = new ItemCabangModel();
+
+        for(ItemDTO lstItem : listItem){
+            if(lstItem.uuid.equals(item.getUuid())){
+                if(lstItem.stok > item.getStokItem()){
+                    ItemCabangModel itemCabangIsExist = itemCabangService.getItemInCabang(item.getUuid(), item.getCabang());
+                    if(itemCabangIsExist != null){
+                        int itemExist = itemCabangIsExist.getStokItem() + item.getStokItem();
+                        itemCabangIsExist.setStokItem(itemExist);
+                    }else{
+                        itemSelected.setUuid(item.getUuid());
+                        itemSelected.setCabang(item.getCabang());
+                        itemSelected.setNamaItem(item.getNamaItem());
+                        itemSelected.setHargaItem(item.getHargaItem());
+                        itemSelected.setStokItem(item.getStokItem());
+                        itemSelected.setKategori(item.getKategori());
+                        itemSelected.setId_promo(1);
+                        itemCabangService.addItemCabang(itemSelected);
+                    }
+
+                    int stockUpdated = lstItem.stok - item.getStokItem();
+                    itemCabangService.updateStock(item.getUuid(), stockUpdated);
+                }
+            }
+        }
+        model.addAttribute("cabang", item.getCabang());
+        model.addAttribute("nama", itemSelected.getNamaItem());
+        model.addAttribute("listItemInCabang", item.getCabang().getListItem());
         return "add-item";
     }
     // pekerjaan evan tutup

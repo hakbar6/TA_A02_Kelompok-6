@@ -13,9 +13,11 @@ public interface ItemCabangService {
     Optional<ItemCabangModel> getItemByUuid(String uuid);
     ItemCabangModel getItemByUuid2 (String uuid);
     boolean penggunaanBarang (String uuid, int penggunaan, Long noCabang);
-    ItemCabangModel getItemInCabang (CabangModel cabang, String uuid);
+    ItemCabangModel getItemInCabang (String uuid, CabangModel cabang);
     void addItemCabang (ItemCabangModel item);
     ItemCabangModel getItemByUuidImprv (String UUID);
     ItemCabangModel getItemById (Long id);
     List<ItemCabangModel> getListItem();
+    List<ItemCabangModel> getAllListItem (List<ItemDTO> listItem, CabangModel cabang);
+    ItemDTO updateStock(String uuid, int stok);
 }
