@@ -21,6 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+
 @Controller
 public class ItemController {
     HashMap<String, Integer> enumKategori;
@@ -49,16 +56,6 @@ public class ItemController {
 
     @Autowired 
     CabangService cabangService;
-
-    // pekerjaan evan
-    @GetMapping("/test")
-    public String testAPIGETITEM(
-        Model model
-    ){
-        List<ItemDTO> result = itemCabangService.getAllItem();
-        return "home";
-    }
-    // pekerjaan evan tutup
 
     @GetMapping("/item/additem/{noCabang}")
     public String addItem(
@@ -99,7 +96,8 @@ public class ItemController {
             itemCabangService.addItem(itemCabangModel);
             itemCabangService.updateSiItem(uuid, iteminSiItem.stok-stok);
         }
-        return "redirect:/cabang/view?noCabang="+noCabang;
+        model.addAttribute("noCabang", noCabang);
+        return "add-item";
     }
 
     @GetMapping(value = "/item/requestitem/{noCabang}")
@@ -136,5 +134,4 @@ public class ItemController {
         model.addAttribute("nama", namaitem);
         return "delete-item";
     }
-    
 }

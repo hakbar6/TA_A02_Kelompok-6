@@ -15,6 +15,7 @@ import org.springframework.http.codec.ClientCodecConfigurer;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
@@ -33,9 +34,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class ItemCabangServiceImpl implements ItemCabangService{
+    private final WebClient webClient;
 
     @Autowired
     private ItemCabangDb itemCabangDb;
+
+    public ItemCabangServiceImpl(WebClient.Builder webClientBuilder){
+        this.webClient = webClientBuilder.baseUrl("https://si-item.herokuapp.com").build();
+    }
 
     // fungsi untuk retrive item dari si-item
     @Override
