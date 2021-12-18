@@ -18,10 +18,6 @@
             <div class="justify-content-center">
                 <h2 class="text-center"><b>Form Tambah Item</b></h2> <br>
                 <form th:action='@{/cabang/addItem/} + ${noCabang}' method="POST" th:object="${newItem}">
-                    Nama Cabang : <br>
-                    <input type="text" readonly class="form-control" th:value="${cabang.getNama()}"/>
-                    <input type="hidden" th:field="*{cabang}" name="cabang"/>
-                    <br><br>
                     Nama Item: <br>
                     <select class="form-control" id="item" th:name="namaItem">
                         <option selected value=""> --Pilih Item-- </Option>
