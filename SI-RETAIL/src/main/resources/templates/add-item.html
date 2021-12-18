@@ -3,20 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Add Item</title>
+    <title>Add Item - Success</title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
 <body>
 
-<nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
 <div class="container justify-content-center">
     <br>
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="justify-content-center">
-                <h2>sukses menambahkan item</h2>
+                <h2>Item berhasil ditambahkan</h2>
                 <a class="btn btn-primary" th:href="@{/cabang/daftarCabang}">Kembali</a>
             </div>
         </div>

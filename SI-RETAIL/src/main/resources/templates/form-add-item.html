@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Tambah Item</title>
+
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
 <body>
+
 
 <nav th:replace="fragments/fragment :: navbar('Home')"></nav>
 <div class="container justify-content-center">
@@ -16,39 +18,26 @@
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="justify-content-center">
-                <h2 class="text-center"><b>Tambah Item</b></h2>
+                <h2 class="text-center"><b>Form Tambah Item</b></h2>
                 <br>
         
                     <form action="/item/additem" method="post">
-                    <table class="table">                
-                        
-                        <tr>
-                            <td>
-                                Pilih item
-                            </td> 
-                            <td>
-                                <select name="itemuuid">
-                                    <div th:each="item, iterationStatus : ${items}">
-                                        <option th:value="${item.uuid}" th:text="${item.nama}"></option>
-                                    </div>
-                                </select>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-                                Jumlah
-                            </td> 
-                            <td>
-                                <input type="number" name="itemstok">
-                            </td>
-                        </tr>
-
-                        <input hidden type="number" name="noCabang" th:value="${noCabang}">
-                    </table>
+                      
+                    Nama Item: <br>
+                    <select class="form-control" id="item" name="itemuuid">
+                        <option selected value=""> --Pilih Item-- </Option>
+                        <option th:each="i : ${items}" th:value="${i.uuid}" th:text="${i.nama}"></option>
+                    </select>
+                    <br><br>
+          
+                    Jumlah: <br>
+                    <input class="form-control" min = "0" type="number" th:name="itemstok"/>
+                    <br><br>
+          
+                    <input hidden type="number" name="noCabang" th:value="${noCabang}">
+          
                     <input type="submit" value="Tambah" class="btn btn-primary">
                     </form>
-
             </div>
         </div>
     </div>
