@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -82,7 +84,45 @@ public class ItemCabangServiceImpl implements ItemCabangService{
         
     }
 
+    @Override
+    public void requestItem(String uuid, Integer kategori, int stock, Long noCabang) {
+        // TODO Auto-generated method stub
+        WebClient webClient = WebClient.builder().baseUrl("https://a02-5-sifactory.herokuapp.com").build();
+        HashMap rb = new HashMap<>();
+        rb.put("uuid", uuid);
+        rb.put("stok", stock);
+        rb.put("idKategori", Integer.valueOf(kategori));
+        rb.put("idCabang", noCabang);
+        HashMap response = webClient.post().uri("/api/rui")
+        .body(Mono.just(rb), HashMap.class)
+        .retrieve()
+        .bodyToMono(HashMap.class)
+        .block();
+        // System.out.println(response);
+    }
 
+    @Override
+    public ItemCabangModel getItemFromDB(Long id) {
+        // TODO Auto-generated method stub
+        Optional<ItemCabangModel> item = itemCabangDb.findById(id);
+        if (item.isPresent()){
+            return item.get();
+        }else{
+            throw new NoSuchElementException();
+        }
+    }
 
+    @Override
+    public void deleteItemFromDB(Long id){
+        ItemCabangModel itm = itemCabangDb.getById(id);
+        itemCabangDb.delete(itm);
+        // Optional<ItemCabangModel> item = itemCabangDb.findById(id);
+        // if (item.isPresent()) {
+        //     ItemCabangModel itm = item.get();
+        //     itemCabangDb.delete(itm);
+        // } else {
+        //     throw new NoSuchElementException();
+        // }
+    }
 
 }

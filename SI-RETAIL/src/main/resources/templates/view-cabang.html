@@ -54,8 +54,13 @@
                                 <td class="text-center align-middle" th:text="${item.stokItem}"></td>
                                 <td class="text-center align-middle" th:text="${item.kategori}"></td>
                                 <td class="text-center align-middle" th:text="${item.id_promo}"></td>
-                                <td class="text-center align-middle"><a class="btn btn-primary btn-sm" href="/">Apply &#x1F3F7;</a></td>
-                                <td class="text-center align-middle"><a class="btn btn-danger btn-sm" href="/">Delete</a></td>
+                                <td>
+                                    <form action="/item/delete" method="post">
+                                        <input hidden type="number" name="id" th:value="${item.id}">
+                                        <input hidden type="text" name="namaitem" th:value="${item.namaItem}">
+                                        <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                                    </form>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -67,6 +72,7 @@
                 <br>
                 <a class="btn btn-danger" th:href="@{/cabang}">Kembali</a>
                 <a class="btn btn-success" th:href="@{/item/additem/} + ${cabang.noCabang}">Add Item</a>
+                <a class="btn btn-success" th:href="@{/item/requestitem/} + ${cabang.noCabang}">Request Item</a>
             </div>
         </div>
     </div>

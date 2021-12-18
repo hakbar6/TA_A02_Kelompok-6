@@ -185,12 +185,4 @@ public class CabangController {
 
         return "view-cabang";
     }
-
-    @GetMapping("/cabang/additem/{noCabang}")
-    public String addItem(
-        @PathVariable Long noCabang
-    ){
-        System.out.println("additem");
-        return "form-add-item";
-    }
 }

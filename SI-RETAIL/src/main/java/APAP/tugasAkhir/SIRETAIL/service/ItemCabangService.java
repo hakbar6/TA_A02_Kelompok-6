@@ -10,4 +10,7 @@ public interface ItemCabangService {
     List<ItemDTO> getAllItem();
     ItemDTO getItem(String uuid);
     void updateSiItem(String uuid, int newStock);
+    void requestItem(String uuid, Integer integer,int stock, Long noCabang);
+    ItemCabangModel getItemFromDB(Long id);
+    void deleteItemFromDB(Long id);
 }

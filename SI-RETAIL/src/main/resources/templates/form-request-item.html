@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Tambah Item</title>
+    <title>Request Item</title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
@@ -16,10 +16,10 @@
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="justify-content-center">
-                <h2 class="text-center"><b>Tambah Item</b></h2>
+                <h2 class="text-center"><b>Request Item</b></h2>
                 <br>
         
-                    <form action="/item/additem" method="post">
+                    <form action="/item/requestitem" method="post">
                     <table class="table">                
                         
                         <tr>
@@ -46,7 +46,7 @@
 
                         <input hidden type="number" name="noCabang" th:value="${noCabang}">
                     </table>
-                    <input type="submit" value="Tambah" class="btn btn-primary">
+                    <input type="submit" value="Request" class="btn btn-primary">
                     </form>
 
             </div>
