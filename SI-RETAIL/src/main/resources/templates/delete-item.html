@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Add Item - Success</title>
+    <title>Delete Item</title>
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
@@ -16,7 +16,7 @@
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="justify-content-center">
-                <h2>Item berhasil ditambahkan</h2>
+                <h2>berhasil menghapus <span th:text="${nama}"></span> dari database</h2>
                 <a class="btn btn-primary" th:href="@{/cabang/daftarCabang}">Kembali</a>
             </div>
         </div>

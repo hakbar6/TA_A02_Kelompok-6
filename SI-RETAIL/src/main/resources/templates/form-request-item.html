@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Request Item</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<div class="container justify-content-center">
+    <br>
+    <div class="card m-4 p-4 cardHome">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2 class="text-center"><b>Request Item</b></h2>
+                <br>
+        
+                    <form action="/item/requestitem" method="post">
+                    <table class="table">                
+                        
+                        <tr>
+                            <td>
+                                Pilih item
+                            </td> 
+                            <td>
+                                <select name="itemuuid">
+                                    <div th:each="item, iterationStatus : ${items}">
+                                        <option th:value="${item.uuid}" th:text="${item.nama}"></option>
+                                    </div>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Jumlah
+                            </td> 
+                            <td>
+                                <input type="number" name="itemstok">
+                            </td>
+                        </tr>
+
+                        <input hidden type="number" name="noCabang" th:value="${noCabang}">
+                    </table>
+                    <input type="submit" value="Request" class="btn btn-primary">
+                    </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:replace="fragments/fragment :: src1"></script>
+<script th:replace="fragments/fragment :: src2"></script>
+<script th:replace="fragments/fragment :: src3"></script>
+
+</body>
+</html>

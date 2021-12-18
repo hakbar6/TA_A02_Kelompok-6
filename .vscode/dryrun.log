@@ -1,0 +1,4 @@
+make.exe -f C:\Users\ASUS\Desktop\uas sosi\templateUASSOSI2021\Week07 --dry-run --always-make --keep-going --print-directory
+'make.exe' is not recognized as an internal or external command,
+operable program or batch file.
+ 

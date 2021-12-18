@@ -1,116 +1,136 @@
 package APAP.tugasAkhir.SIRETAIL.controller;
 
-import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
+
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
+import APAP.tugasAkhir.SIRETAIL.repository.CabangDb;
 import APAP.tugasAkhir.SIRETAIL.rest.ItemDTO;
-import APAP.tugasAkhir.SIRETAIL.service.CabangService;
-import APAP.tugasAkhir.SIRETAIL.service.CabangServiceImpl;
+import APAP.tugasAkhir.SIRETAIL.service.CabangService
+
 import APAP.tugasAkhir.SIRETAIL.service.ItemCabangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
+
+import java.lang.ProcessBuilder.Redirect;
+import java.util.HashMap;
 import java.util.List;
+
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 
 @Controller
 public class ItemController {
+    HashMap<String, Integer> enumKategori;
+
+    ItemController(){
+        enumKategori = new HashMap<>();
+        enumKategori.put("BUKU", 1);
+        enumKategori.put("DAPUR", 2);
+        enumKategori.put("MAKANAN & MINUMAN", 3);
+        enumKategori.put("ELEKTRONIK", 4);
+        enumKategori.put("FASHION", 5);
+        enumKategori.put("KECANTIKAN & PERAWATAN DIRI", 6);
+        enumKategori.put("FILM & MUSIK", 7);
+        enumKategori.put("GAMING", 8);
+        enumKategori.put("GADGET", 9);
+        enumKategori.put("KESEHATAN", 10);
+        enumKategori.put("RUMAH TANGGA", 11);
+        enumKategori.put("FURNITURE", 12);
+        enumKategori.put("ALAT & PERANGKAT KERAS", 13);
+        enumKategori.put("WEDDING", 14);
+    }
 
     @Qualifier("itemCabangServiceImpl")
     @Autowired
     private ItemCabangService itemCabangService;
 
-    @Qualifier("cabangServiceImpl")
-    @Autowired
+    @Autowired 
     CabangService cabangService;
 
-    // pekerjaan evan
-    @GetMapping("/item/viewall") //menampilkan halaman untuk item dan semua item yang ada
-    public String getItem(
+    @GetMapping("/item/additem/{noCabang}")
+    public String addItem(
+        @PathVariable Long noCabang,
         Model model
     ){
         List<ItemDTO> result = itemCabangService.getAllItem();
-        model.addAttribute("item", result);
-        return "home";
-    }
-
-    @GetMapping("/cabang/addItem/{noCabang}") //halaman untuk menambahkan item dari item --> this goes to form
-    public String addItem (Model model, @PathVariable Long noCabang) {
-        ItemCabangModel item = new ItemCabangModel();
-        CabangModel cabang = cabangService.getCabang(noCabang);
-        List<ItemDTO> listItem = itemCabangService.getAllItem();
-
-        item.setCabang(cabang);
-        model.addAttribute("cabang", cabang);
-        model.addAttribute("listItem", listItem);
-        model.addAttribute("newItem", item);
+        // System.out.println("additem");
+        // for (ItemDTO itemDTO : result) {
+        //     System.out.println(itemDTO.nama);
+        // }
+        model.addAttribute("items", result);
         model.addAttribute("noCabang", noCabang);
         return "form-add-item";
     }
-/*
-    @PostMapping(value = "/cabang/addItem2/{noCabang}", params = { "save" }) //
-    public String addItemPost2 (
-        @ModelAttribute ItemCabangModel item,
-        @RequestParam("namaItem") String namaItem,
-        @PathVariable Long noCabang,
-        String uuid, Model model){
-        
-        List<ItemDTO> listItem = itemCabangService.getAllItem();
-        ItemCabangModel itemSelected = new ItemCabangModel();
 
-        for(ItemDTO lstItem : listItem){
-            if(lstItem.uuid.equals(item.getUuid())){
-                itemCabangService.penggunaanBarang(itemSelected.getUuid(), itemSelected.getStokItem(), itemSelected.getCabang().getNoCabang());
-            }
+    @PostMapping(value="/item/additem")
+    public String postMethodName(
+        @RequestParam("noCabang") Long noCabang,
+        @RequestParam("itemuuid") String uuid,
+        @RequestParam("itemstok") int stok,
+        RedirectAttributes red,
+        Model model
+    ) {
+        ItemDTO iteminSiItem = itemCabangService.getItem(uuid);
+        if (stok > iteminSiItem.stok) {
+            red.addFlashAttribute("pesanError", "Stok " + iteminSiItem.nama + " tidak cukup, stok maksimal = " + iteminSiItem.stok);
+            return "redirect:/cabang/view?noCabang="+noCabang;
         }
-        model.addAttribute("cabang", item.getCabang());
-        model.addAttribute("nama", itemSelected.getNamaItem());
-        return "add-item";
-    }
-*/ //ver 17/12/2021 pagi
-    @PostMapping(value = "/cabang/addItem/{noCabang}", params = { "save" }) //
-    public String addItemPost (
-        @ModelAttribute ItemCabangModel item,
-        @RequestParam("namaItem") String namaItem,
-        @PathVariable Long noCabang,
-        String uuid, Model model){
-        
-        List<ItemDTO> listItem = itemCabangService.getAllItem();
-        ItemCabangModel itemSelected = new ItemCabangModel();
-
-        for(ItemDTO lstItem : listItem){
-            if(lstItem.uuid.equals(item.getUuid())){
-                if(lstItem.stok > item.getStokItem()){
-                    ItemCabangModel itemCabangIsExist = itemCabangService.getItemInCabang(item.getUuid(), item.getCabang());
-                    if(itemCabangIsExist != null){
-                        int itemExist = itemCabangIsExist.getStokItem() + item.getStokItem();
-                        itemCabangIsExist.setStokItem(itemExist);
-                    }else{
-                        itemSelected.setUuid(item.getUuid());
-                        itemSelected.setCabang(item.getCabang());
-                        itemSelected.setNamaItem(item.getNamaItem());
-                        itemSelected.setHargaItem(item.getHargaItem());
-                        itemSelected.setStokItem(item.getStokItem());
-                        itemSelected.setKategori(item.getKategori());
-                        itemSelected.setId_promo(1);
-                        itemCabangService.addItemCabang(itemSelected);
-                    }
-
-                    int stockUpdated = lstItem.stok - item.getStokItem();
-                    itemCabangService.updateStock(item.getUuid(), stockUpdated);
-                }
-            }
+        else{
+            ItemCabangModel itemCabangModel = new ItemCabangModel();
+            itemCabangModel.setCabang(cabangService.getCabang(noCabang));
+            itemCabangModel.setNamaItem(iteminSiItem.nama);
+            itemCabangModel.setHargaItem(iteminSiItem.harga);
+            itemCabangModel.setKategori(iteminSiItem.kategori);
+            itemCabangModel.setUuid(uuid);
+            itemCabangModel.setStokItem(stok);
+            itemCabangService.addItem(itemCabangModel);
+            itemCabangService.updateSiItem(uuid, iteminSiItem.stok-stok);
         }
-        model.addAttribute("cabang", item.getCabang());
-        model.addAttribute("nama", itemSelected.getNamaItem());
-        model.addAttribute("listItemInCabang", item.getCabang().getListItem());
-        return "add-item";
+        return "redirect:/cabang/view?noCabang="+noCabang;
     }
-    // pekerjaan evan tutup
+
+    @GetMapping(value = "/item/requestitem/{noCabang}")
+    public String requestItem(
+        @PathVariable Long noCabang,
+        Model model
+    ){
+        List<ItemDTO> result = itemCabangService.getAllItem();
+        model.addAttribute("items", result);
+        model.addAttribute("noCabang", noCabang);
+        return "form-request-item";
+    }
+
+    @PostMapping(value = "/item/requestitem")
+    public String postRequestItem(
+        @RequestParam("noCabang") Long noCabang,
+        @RequestParam("itemuuid") String uuid,
+        @RequestParam("itemstok") int stok,
+        Model model
+    ){
+        ItemDTO item = itemCabangService.getItem(uuid);
+        // System.out.println(enumKategori.get(item.kategori) + " " + item.kategori);
+        itemCabangService.requestItem(uuid, enumKategori.get(item.kategori), stok, noCabang);
+        return "request-item";
+    }
+
+    @PostMapping(value = "/item/delete")
+    public String deleteItem(
+        @RequestParam Long id,
+        @RequestParam String namaitem,
+        Model model
+    ){
+        itemCabangService.deleteItemFromDB(id);
+        model.addAttribute("nama", namaitem);
+        return "delete-item";
+    }
+    
 }

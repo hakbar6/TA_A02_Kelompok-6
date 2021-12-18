@@ -1,11 +1,12 @@
 package APAP.tugasAkhir.SIRETAIL.service;
 
-import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
+
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
-import APAP.tugasAkhir.SIRETAIL.repository.CabangDb;
 import APAP.tugasAkhir.SIRETAIL.repository.ItemCabangDb;
 import APAP.tugasAkhir.SIRETAIL.rest.BaseResponse;
 import APAP.tugasAkhir.SIRETAIL.rest.ItemDTO;
+import ch.qos.logback.core.util.Duration;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ClientHttpConnector;
 import org.springframework.http.codec.ClientCodecConfigurer;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
@@ -58,126 +60,79 @@ public class ItemCabangServiceImpl implements ItemCabangService{
         return itemDTOS.getResult().stream().collect(Collectors.toList());
     }
 
-    //Not used, refer to getItemByUuidImprv
     @Override
-    public Optional<ItemCabangModel> getItemByUuid(String uuid){
-        return itemCabangDb.findByUuid(uuid);
-    }
-    //Not used, refer to getItemByUuidImprv
-    @Override
-    public ItemCabangModel getItemByUuid2 (String uuid){
-        Optional<ItemCabangModel> item = itemCabangDb.findByUuid(uuid);
-        return item.get();
-    }
-
-    @Override
-    public void addItemCabang (ItemCabangModel item){
-        itemCabangDb.save(item);
-    }
-
-    @Override
-    public ItemCabangModel getItemInCabang (String uuid, CabangModel cabang){
-        List<ItemCabangModel> listItemCabang = cabang.getListItem();
-        for(ItemCabangModel item : listItemCabang){
-            if(item.getUuid().equals(uuid)){
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public ItemCabangModel getItemByUuidImprv (String UUID){
-        Optional<ItemCabangModel> itemInCabang = itemCabangDb.findByUuid(UUID);
-        if (itemInCabang.isPresent()){
-            return itemInCabang.get();
-        }
-        else{
-            throw new NoSuchElementException();
-        }
-    }
-
-    @Override
-    public ItemCabangModel getItemById (Long id){
-        Optional<ItemCabangModel> itemInCabang = itemCabangDb.findById(id);
-        if (itemInCabang.isPresent()){
-            return itemInCabang.get();
-        }
-        else{
-            throw new NoSuchElementException();
-        }
-    }
-
-    @Override
-    public ItemDTO updateStock(String uuid, int stok){
-        ItemDTO updatedStock = new ItemDTO();
-        updatedStock.setStok(stok);
-        try{
-            ItemDTO response = webClient.put().uri("/api/item/" + uuid).syncBody(updatedStock).retrieve().bodyToMono(ItemDTO.class).block();
-            return response;
-        } catch(Exception exc){
-            return null;
-        }
-    }
-
-    //ini gadipake
-    @Override// Cek kecukupan barang, sekalian update
-    public boolean penggunaanBarang (String uuid, int penggunaan, Long noCabang){
+    public ItemDTO getItem(String uuid) {
+        // TODO Auto-generated method stub
         WebClient webClient = WebClient.builder().baseUrl("https://si-item.herokuapp.com").build();
-        Mono<BaseResponse<ItemDTO>> response = webClient.get().uri("/api/item/" + uuid)
+        Mono<BaseResponse<ItemDTO>> response = webClient.get().uri("/api/item/"+uuid)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<BaseResponse<ItemDTO>>() {});
-
-        BaseResponse<ItemDTO> output = response.block();
-        ItemDTO fokus = output.getResult();
-
-        if(penggunaan > fokus.stok){
-            return false;
-        }
-        else{
-            int hasil = 0;
-            hasil = fokus.stok -= penggunaan;
-
-            ItemCabangModel item = new ItemCabangModel();
-            item.setCabang(cabangDb.getById(noCabang));
-            item.setUuid(uuid);
-            item.setNamaItem(fokus.nama);
-            item.setStokItem(penggunaan);
-            item.setKategori(fokus.kategori);
-            item.setHargaItem(fokus.harga);
-
-            //--------------------------------------------------------------------------------//
-            Map<String, Object> bodyMap = new HashMap<String, Object>();
-            bodyMap.put("stok",hasil);
-
-            Mono<BaseResponse<ItemDTO>> responseCallBack = webClient.put().uri("/api/item/" + uuid)
-            .body(BodyInserters.fromValue(bodyMap))
-            .accept(MediaType.APPLICATION_JSON)
-            .retrieve()
-            .bodyToMono(new ParameterizedTypeReference<BaseResponse<ItemDTO>>() {});
-            return true;
-        }
+                .bodyToMono(new ParameterizedTypeReference<BaseResponse<ItemDTO>>(){});
+        ItemDTO itemDTO = response.block().getResult();
+        System.out.println(itemDTO.nama);
+        return itemDTO;
     }
+
     @Override
-    public List<ItemCabangModel> getListItem(){
-        return itemCabangDb.findAll();
+    public void addItem(ItemCabangModel item) {
+        // TODO Auto-generated method stub
+        itemCabangDb.save(item);        
     }
 
-    //coba pakai yang ini
     @Override
-    public List<ItemCabangModel> getAllListItem (List<ItemDTO> listItem, CabangModel cabang){
-        List<ItemCabangModel> listItemInCabang = new ArrayList<>();
-        for (ItemDTO item : listItem){
-            ItemCabangModel itemCabang = new ItemCabangModel();
-            itemCabang.setCabang(cabang);
-            itemCabang.setUuid(item.uuid);
-            itemCabang.setNamaItem(item.nama);
-            itemCabang.setStokItem(item.stok);
-            itemCabang.setKategori(item.kategori);
-            itemCabang.setId_promo(1);
-            listItemInCabang.add(itemCabang);
-        }
-        return listItemInCabang;
+    public void updateSiItem(String uuid, int newStock) {
+        // TODO Auto-generated method stub
+        WebClient webClient = WebClient.builder().baseUrl("https://si-item.herokuapp.com").build();
+        HashMap rb = new HashMap<>();
+        rb.put("stok", newStock);
+        HashMap response = webClient.put().uri("/api/item/" + uuid)
+        .body(Mono.just(rb), HashMap.class)
+        .retrieve()
+        .bodyToMono(HashMap.class)
+        .block();
+        // System.out.println(response);
+        
     }
+
+    @Override
+    public void requestItem(String uuid, Integer kategori, int stock, Long noCabang) {
+        // TODO Auto-generated method stub
+        WebClient webClient = WebClient.builder().baseUrl("https://a02-5-sifactory.herokuapp.com").build();
+        HashMap rb = new HashMap<>();
+        rb.put("uuid", uuid);
+        rb.put("stok", stock);
+        rb.put("idKategori", Integer.valueOf(kategori));
+        rb.put("idCabang", noCabang);
+        HashMap response = webClient.post().uri("/api/rui")
+        .body(Mono.just(rb), HashMap.class)
+        .retrieve()
+        .bodyToMono(HashMap.class)
+        .block();
+        // System.out.println(response);
+    }
+
+    @Override
+    public ItemCabangModel getItemFromDB(Long id) {
+        // TODO Auto-generated method stub
+        Optional<ItemCabangModel> item = itemCabangDb.findById(id);
+        if (item.isPresent()){
+            return item.get();
+        }else{
+            throw new NoSuchElementException();
+        }
+    }
+
+    @Override
+    public void deleteItemFromDB(Long id){
+        ItemCabangModel itm = itemCabangDb.getById(id);
+        itemCabangDb.delete(itm);
+        // Optional<ItemCabangModel> item = itemCabangDb.findById(id);
+        // if (item.isPresent()) {
+        //     ItemCabangModel itm = item.get();
+        //     itemCabangDb.delete(itm);
+        // } else {
+        //     throw new NoSuchElementException();
+        // }
+    }
+
 }
