@@ -1,6 +1,5 @@
 package APAP.tugasAkhir.SIRETAIL.service;
 
-
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
 import APAP.tugasAkhir.SIRETAIL.repository.ItemCabangDb;
 import APAP.tugasAkhir.SIRETAIL.rest.BaseResponse;
@@ -39,9 +38,6 @@ public class ItemCabangServiceImpl implements ItemCabangService{
 
     @Autowired
     private ItemCabangDb itemCabangDb;
-
-    @Autowired
-    private CabangDb cabangDb;
 
     public ItemCabangServiceImpl(WebClient.Builder webClientBuilder){
         this.webClient = webClientBuilder.baseUrl("https://si-item.herokuapp.com").build();

@@ -1,24 +1,25 @@
 package APAP.tugasAkhir.SIRETAIL.controller;
 
-
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
 import APAP.tugasAkhir.SIRETAIL.repository.CabangDb;
 import APAP.tugasAkhir.SIRETAIL.rest.ItemDTO;
-import APAP.tugasAkhir.SIRETAIL.service.CabangService
-
+import APAP.tugasAkhir.SIRETAIL.service.CabangService;
 import APAP.tugasAkhir.SIRETAIL.service.ItemCabangService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
 import org.springframework.web.bind.annotation.PathVariable;
-
 
 import java.lang.ProcessBuilder.Redirect;
 import java.util.HashMap;
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -95,7 +96,8 @@ public class ItemController {
             itemCabangService.addItem(itemCabangModel);
             itemCabangService.updateSiItem(uuid, iteminSiItem.stok-stok);
         }
-        return "redirect:/cabang/view?noCabang="+noCabang;
+        model.addAttribute("noCabang", noCabang);
+        return "add-item";
     }
 
     @GetMapping(value = "/item/requestitem/{noCabang}")
@@ -132,5 +134,4 @@ public class ItemController {
         model.addAttribute("nama", namaitem);
         return "delete-item";
     }
-    
 }

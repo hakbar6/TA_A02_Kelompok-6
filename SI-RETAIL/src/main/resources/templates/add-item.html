@@ -10,14 +10,14 @@
 
 <body>
 
-<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
 <div class="container justify-content-center">
     <br>
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="justify-content-center">
                 <h2>Item berhasil ditambahkan</h2>
-                <a class="btn btn-primary" th:href="@{/cabang/daftarCabang}">Kembali</a>
+                <a class="btn btn-primary" th:href="@{/cabang/view?noCabang=} + ${noCabang}">Kembali</a>
             </div>
         </div>
     </div>
