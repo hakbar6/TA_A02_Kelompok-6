@@ -24,7 +24,6 @@ import java.io.Serializable;
 @Getter
 @Entity
 @Table(name = "item")
-
 public class ItemCabangModel implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,12 +52,12 @@ public class ItemCabangModel implements Serializable{
     @Column(name = "kategori", nullable = false)
     private String kategori;
 
+    @Column(name = "id_promo")
+    private int id_promo;
+
     // Relasi dengan cabang model (Many to One)
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "noCabang", referencedColumnName = "noCabang", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private CabangModel cabang;
-
-    @Column(name = "id_promo")
-    private int id_promo;
 }

@@ -6,6 +6,7 @@ import APAP.tugasAkhir.SIRETAIL.repository.CabangDb;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class CabangServiceImpl implements CabangService{
     public CabangModel addCabang(CabangModel cabang, UserModel user) {
         cabang.setStatusCabang(2);
         cabang.setUser(user);
+        cabang.setListItem(new ArrayList<>());
         return cabangDb.save(cabang);
     }
 
@@ -32,7 +34,6 @@ public class CabangServiceImpl implements CabangService{
         Optional<CabangModel> cabang = cabangDb.findByNoCabang(noCabang);
         if (cabang.isPresent()) {
             CabangModel cb = cabang.get();
-
             if (cb.getListItem().isEmpty()) {
                 cabangDb.delete(cb);
             } else {
@@ -54,6 +55,23 @@ public class CabangServiceImpl implements CabangService{
     }
 
     @Override
+    public CabangModel acceptCabang(Long noCabang, UserModel user) {
+        CabangModel cabang = cabangDb.getById(noCabang);
+        cabang.setStatusCabang(2);
+        cabang.setUser(user);
+        cabang.setListItem(new ArrayList<>());
+        return cabangDb.save(cabang);
+    }
+
+    @Override
+    public CabangModel rejectCabang(Long noCabang, UserModel user) {
+        CabangModel cabang = cabangDb.getById(noCabang);
+        cabang.setStatusCabang(1);
+        cabang.setUser(user);
+        return cabangDb.save(cabang);
+    }
+
+    @Override
     public List<CabangModel> getListCabang() {
         return cabangDb.findAll();
     }
@@ -61,6 +79,18 @@ public class CabangServiceImpl implements CabangService{
     @Override
     public List<CabangModel> getListCabangByUser(UserModel user) {
         return cabangDb.findAllByUser(user);
+    }
+
+    @Override
+    public List<CabangModel> getListPermintaan() {
+        List<CabangModel> cabang = getListCabang();
+        List<CabangModel> output = new ArrayList<>();
+        for (int i=0;i<cabang.size();i++){
+            if (cabang.get(i).getStatusCabang() == 0){
+                output.add(cabang.get(i));
+            }
+        }
+        return output;
     }
 
 }
