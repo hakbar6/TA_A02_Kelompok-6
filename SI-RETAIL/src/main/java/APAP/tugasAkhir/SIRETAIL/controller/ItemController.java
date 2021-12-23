@@ -1,22 +1,36 @@
 package APAP.tugasAkhir.SIRETAIL.controller;
 
+import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
+import APAP.tugasAkhir.SIRETAIL.model.UserModel;
 import APAP.tugasAkhir.SIRETAIL.repository.CabangDb;
 import APAP.tugasAkhir.SIRETAIL.rest.ItemDTO;
 import APAP.tugasAkhir.SIRETAIL.service.CabangService;
 import APAP.tugasAkhir.SIRETAIL.service.ItemCabangService;
+import APAP.tugasAkhir.SIRETAIL.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.lang.ProcessBuilder.Redirect;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,6 +45,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ItemController {
     HashMap<String, Integer> enumKategori;
+
+    @Qualifier("userServiceImpl")
+    @Autowired
+    private UserService userService;
 
     ItemController(){
         enumKategori = new HashMap<>();
@@ -60,44 +78,110 @@ public class ItemController {
     @GetMapping("/item/additem/{noCabang}")
     public String addItem(
         @PathVariable Long noCabang,
+        Authentication authentication,
         Model model
     ){
-        List<ItemDTO> result = itemCabangService.getAllItem();
-        // System.out.println("additem");
-        // for (ItemDTO itemDTO : result) {
-        //     System.out.println(itemDTO.nama);
-        // }
-        model.addAttribute("items", result);
-        model.addAttribute("noCabang", noCabang);
-        return "form-add-item";
+        CabangModel cabang = cabangService.getCabang(noCabang);
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        
+        if(cabang.getUser().getUsername().equals(user.getUsername()) || user.getRole().getRole().equals("Kepala Retail") || user.getRole().getRole().equals("Manager Cabang")){
+            List<ItemDTO> result = itemCabangService.getAllItem();
+            CabangModel itemInCabang = new CabangModel();
+            itemInCabang.setListItem(new ArrayList<ItemCabangModel>());
+            itemInCabang.getListItem().add(new ItemCabangModel());
+            
+            model.addAttribute("itemCabang", itemInCabang);
+            model.addAttribute("items", result);
+            model.addAttribute("noCabang", noCabang);
+            model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
+            return "form-add-item2";
+        }
+        else{
+            return "error/403";
+        }
     }
 
-    @PostMapping(value="/item/additem")
+    @PostMapping(value="/item/additem", params = "save")
     public String postMethodName(
         @RequestParam("noCabang") Long noCabang,
         @RequestParam("itemuuid") String uuid,
         @RequestParam("itemstok") int stok,
         RedirectAttributes red,
+        @ModelAttribute CabangModel cabang,
         Model model
     ) {
+        ItemCabangModel itemCabangModel = new ItemCabangModel();
         ItemDTO iteminSiItem = itemCabangService.getItem(uuid);
         if (stok > iteminSiItem.stok) {
             red.addFlashAttribute("pesanError", "Stok " + iteminSiItem.nama + " tidak cukup, stok maksimal = " + iteminSiItem.stok);
             return "redirect:/cabang/view?noCabang="+noCabang;
-        }
-        else{
-            ItemCabangModel itemCabangModel = new ItemCabangModel();
-            itemCabangModel.setCabang(cabangService.getCabang(noCabang));
-            itemCabangModel.setNamaItem(iteminSiItem.nama);
-            itemCabangModel.setHargaItem(iteminSiItem.harga);
-            itemCabangModel.setKategori(iteminSiItem.kategori);
-            itemCabangModel.setUuid(uuid);
-            itemCabangModel.setStokItem(stok);
-            itemCabangService.addItem(itemCabangModel);
+        }if(iteminSiItem.stok > stok){
+            ItemCabangModel itemHasExist = itemCabangService.getItemInCabang(cabangService.getCabang(noCabang), itemCabangModel.getUuid());
+            if(itemHasExist != null){
+                //Masih belum bisa nangkep kalau barangnya sama
+                int newStock = itemHasExist.getStokItem() + stok;
+                itemHasExist.setStokItem(newStock);
+            }else{
+                itemCabangModel.setCabang(cabangService.getCabang(noCabang));
+                itemCabangModel.setNamaItem(iteminSiItem.nama);
+                itemCabangModel.setHargaItem(iteminSiItem.harga);
+                itemCabangModel.setKategori(iteminSiItem.kategori);
+                itemCabangModel.setUuid(uuid);
+                itemCabangModel.setStokItem(stok);
+                itemCabangModel.setId_promo(1);
+                itemCabangService.addItem(itemCabangModel);
+                
+            }
             itemCabangService.updateSiItem(uuid, iteminSiItem.stok-stok);
         }
         model.addAttribute("noCabang", noCabang);
+        model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
+        model.addAttribute("itemname", itemCabangModel.getNamaItem());
         return "add-item";
+    }
+
+    @PostMapping(value="/item/additem", params = "addRow")
+    public String addRowCabang(
+        @RequestParam("noCabang") Long noCabang,
+        @ModelAttribute CabangModel cabang,
+        BindingResult bindingResult,
+        Model model
+    ) {
+        List<ItemDTO> listItemCabang = itemCabangService.getAllItem();
+        if(cabang.getListItem() == null || cabang.getListItem().size() == 0){
+            cabang.setListItem(new ArrayList<ItemCabangModel>());
+        }
+        cabang.getListItem().add(new ItemCabangModel());
+
+        model.addAttribute("itemCabang", cabang);
+        model.addAttribute("items", listItemCabang);
+        model.addAttribute("noCabang", noCabang);
+        model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
+        return "form-add-item2";
+    }
+
+    @RequestMapping(value="/item/additem", method = RequestMethod.POST, params = "deleteRow")
+    public String deleteRow(
+        @RequestParam("noCabang") Long noCabang,
+        Authentication authentication,
+        final BindingResult bindingResult,
+        final HttpServletRequest req,
+        Model model
+    ){
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        List<ItemDTO> listItemCabang =itemCabangService.getAllItem();
+
+        final Integer idRow = Integer.valueOf(req.getParameter("deleteRow"));
+        cabangService.getCabang(noCabang).getListItem().remove(idRow.intValue());
+
+        model.addAttribute("listItem", listItemCabang);
+        model.addAttribute("noCabang", noCabang);
+
+
+        cabangService.addCabang(cabangService.getCabang(noCabang), user);
+        return "form-add-item2";
     }
 
     @GetMapping(value = "/item/requestitem/{noCabang}")

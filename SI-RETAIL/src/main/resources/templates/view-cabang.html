@@ -43,7 +43,8 @@
                                 <th class="text-center align-middle">Stok</th>
                                 <th class="text-center align-middle">Kategori</th>
                                 <th class="text-center align-middle">ID Promo</th>
-                                <th colspan="2" class="text-center align-middle">Actions</th>
+                                <th class="text-center align-middle">Promo</th>
+                                <th class="text-center align-middle">Promo</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -54,6 +55,13 @@
                                 <td class="text-center align-middle" th:text="${item.stokItem}"></td>
                                 <td class="text-center align-middle" th:text="${item.kategori}"></td>
                                 <td class="text-center align-middle" th:text="${item.id_promo}"></td>
+                                <td>
+                                    <form action="/item/delete" method="post">
+                                        <input hidden type="number" name="id" th:value="${item.id}">
+                                        <input hidden type="text" name="namaitem" th:value="${item.namaItem}">
+                                        <button class="btn btn-success" type="submit">Terapkan Promo</button>
+                                    </form>
+                                </td>
                                 <td>
                                     <form action="/item/delete" method="post">
                                         <input hidden type="number" name="id" th:value="${item.id}">
