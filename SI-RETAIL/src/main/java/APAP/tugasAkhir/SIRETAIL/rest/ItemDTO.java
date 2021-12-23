@@ -7,9 +7,6 @@ public class ItemDTO {
     public int harga;
     public int stok;
     public String kategori;
-    public void setStok (Integer stok){
-        this.stok = stok;
-    }
 }
 
 
