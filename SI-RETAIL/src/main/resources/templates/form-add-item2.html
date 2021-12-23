@@ -25,7 +25,7 @@
                         <tr>
                             <th>Nama Item</th>
                             <th class = "align-content-end">
-                                <input class = "btn btn-primary" type= "submit" name = "addRow" value="tambah Row">
+                                <button class="btn btn-primary" type="submit" name="addRow">Tambah Row</button>
                             </th>
                         </tr>
                         </thead>
@@ -33,7 +33,8 @@
                             <tr th:each="item, iterationStatus:*{itemCabang}">
                                 <td>
                                     Nama Item: <br>
-                                    <select class="form-control" id="item" name="itemuuid">
+                                    <!-- <select class="form-control" id="item" name="itemuuid">-->
+                                    <select th:field="*{itemCabang[__${iterationStatus.index}__].uuid}">
                                         <option selected value=""> -- Pilih Item -- </Option>
                                         <option th:each="i : ${items}" th:value="${i.uuid}" th:text="${i.nama}"></option>
                                     </select>
@@ -41,8 +42,11 @@
                                 </td>
                                 <td>
                                     Jumlah: <br>
-                                    <input class="form-control" min = "1S" type="number" th:name="itemstok" placeholder = "-- Kuantitas Item --"/>
+                                    <input class="form-control" min = "1" type="number" th:name="itemstok" placeholder = "-- Kuantitas Item --" th:field ="*{itemCabang[__${iterationStatus.index}__].stok}"/>
                                     <br><br>
+                                </td>
+                                <td>
+                                    <button th:value = "${iterationStatus.index}" class = "btn btn-danger" type = "submit" name="deleteRow">Hapus</button>
                                 </td>
                             </tr>
                         </tbody>

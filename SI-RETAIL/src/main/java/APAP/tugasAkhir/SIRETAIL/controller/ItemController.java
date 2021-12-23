@@ -78,20 +78,28 @@ public class ItemController {
     @GetMapping("/item/additem/{noCabang}")
     public String addItem(
         @PathVariable Long noCabang,
-        @ModelAttribute CabangModel cabang,
+        Authentication authentication,
         Model model
     ){
-        List<ItemDTO> result = itemCabangService.getAllItem();
-        List<ItemCabangModel> listItemInCabang = cabang.getListItem();
-        // System.out.println("additem");
-        // for (ItemDTO itemDTO : result) {
-        //     System.out.println(itemDTO.nama);
-        // }
-        model.addAttribute("itemCabang", listItemInCabang);
-        model.addAttribute("items", result);
-        model.addAttribute("noCabang", noCabang);
-        model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
-        return "form-add-item2";
+        CabangModel cabang = cabangService.getCabang(noCabang);
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        
+        if(cabang.getUser().getUsername().equals(user.getUsername()) || user.getRole().getRole().equals("Kepala Retail") || user.getRole().getRole().equals("Manager Cabang")){
+            List<ItemDTO> result = itemCabangService.getAllItem();
+            CabangModel itemInCabang = new CabangModel();
+            itemInCabang.setListItem(new ArrayList<ItemCabangModel>());
+            itemInCabang.getListItem().add(new ItemCabangModel());
+            
+            model.addAttribute("itemCabang", itemInCabang);
+            model.addAttribute("items", result);
+            model.addAttribute("noCabang", noCabang);
+            model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
+            return "form-add-item2";
+        }
+        else{
+            return "error/403";
+        }
     }
 
     @PostMapping(value="/item/additem", params = "save")
@@ -140,20 +148,19 @@ public class ItemController {
         BindingResult bindingResult,
         Model model
     ) {
+        List<ItemDTO> listItemCabang = itemCabangService.getAllItem();
         if(cabang.getListItem() == null || cabang.getListItem().size() == 0){
             cabang.setListItem(new ArrayList<ItemCabangModel>());
         }
-        List<ItemDTO> listItemCabang = itemCabangService.getAllItem();
-        List<ItemCabangModel> listItemInCabang = cabang.getListItem();
-        listItemInCabang.add(new ItemCabangModel());
+        cabang.getListItem().add(new ItemCabangModel());
 
-        model.addAttribute("itemCabang", listItemInCabang);
+        model.addAttribute("itemCabang", cabang);
         model.addAttribute("items", listItemCabang);
         model.addAttribute("noCabang", noCabang);
         model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
         return "form-add-item2";
     }
-/*
+
     @RequestMapping(value="/item/additem", method = RequestMethod.POST, params = "deleteRow")
     public String deleteRow(
         @RequestParam("noCabang") Long noCabang,
@@ -174,9 +181,9 @@ public class ItemController {
 
 
         cabangService.addCabang(cabangService.getCabang(noCabang), user);
-        return "form-add-item";
+        return "form-add-item2";
     }
-*/
+
     @GetMapping(value = "/item/requestitem/{noCabang}")
     public String requestItem(
         @PathVariable Long noCabang,
