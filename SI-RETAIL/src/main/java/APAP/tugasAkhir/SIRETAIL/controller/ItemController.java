@@ -85,16 +85,14 @@ public class ItemController {
         String username = ((UserDetails)authentication.getPrincipal()).getUsername();
         UserModel user = userService.getUserByUsername(username);
         
-        if(cabang.getUser().getUsername().equals(user.getUsername()) || user.getRole().getRole().equals("Kepala Retail") || user.getRole().getRole().equals("Manager Cabang")){
-            List<ItemDTO> result = itemCabangService.getAllItem();
-            CabangModel itemInCabang = new CabangModel();
-            itemInCabang.setListItem(new ArrayList<ItemCabangModel>());
-            itemInCabang.getListItem().add(new ItemCabangModel());
-            
-            model.addAttribute("itemCabang", itemInCabang);
-            model.addAttribute("items", result);
-            model.addAttribute("noCabang", noCabang);
-            model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
+        if(cabang.getUser().getUsername().equals(user.getUsername()) || user.getRole().getRole().equals("Kepala Retail")
+                || user.getRole().getRole().equals("Manager Cabang")){
+            List<ItemDTO> listItem = itemCabangService.getAllItem();
+            cabang.setListItem(new ArrayList<ItemCabangModel>());
+            cabang.getListItem().add(new ItemCabangModel());
+            model.addAttribute("items",listItem);
+            model.addAttribute("cabang",cabang);
+            model.addAttribute("noCabang",noCabang);
             return "form-add-item2";
         }
         else{
@@ -141,46 +139,32 @@ public class ItemController {
         return "add-item";
     }
 
-    @PostMapping(value="/item/additem", params = "addRow")
+    @PostMapping(value="/item/additem/{noCabang}", params = "addRow")
     public String addRowCabang(
-        @RequestParam("noCabang") Long noCabang,
         @ModelAttribute CabangModel cabang,
-        BindingResult bindingResult,
+        @PathVariable Long noCabang,
         Model model
     ) {
-        List<ItemDTO> listItemCabang = itemCabangService.getAllItem();
-        if(cabang.getListItem() == null || cabang.getListItem().size() == 0){
-            cabang.setListItem(new ArrayList<ItemCabangModel>());
-        }
         cabang.getListItem().add(new ItemCabangModel());
-
-        model.addAttribute("itemCabang", cabang);
-        model.addAttribute("items", listItemCabang);
-        model.addAttribute("noCabang", noCabang);
-        model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
+        List<ItemDTO> listItem = itemCabangService.getAllItem();
+        model.addAttribute("items",listItem);
+        model.addAttribute("cabang",cabang);
+        model.addAttribute("noCabang",noCabang);
         return "form-add-item2";
     }
 
-    @RequestMapping(value="/item/additem", method = RequestMethod.POST, params = "deleteRow")
+    @RequestMapping(value="/item/additem/{noCabang}", method = RequestMethod.POST, params = "deleteRow")
     public String deleteRow(
-        @RequestParam("noCabang") Long noCabang,
-        Authentication authentication,
-        final BindingResult bindingResult,
-        final HttpServletRequest req,
+        @ModelAttribute CabangModel cabang,
+        @PathVariable Long noCabang,
+        @RequestParam(value = "deleteRow", required = true) int index,
         Model model
     ){
-        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
-        UserModel user = userService.getUserByUsername(username);
-        List<ItemDTO> listItemCabang =itemCabangService.getAllItem();
-
-        final Integer idRow = Integer.valueOf(req.getParameter("deleteRow"));
-        cabangService.getCabang(noCabang).getListItem().remove(idRow.intValue());
-
-        model.addAttribute("listItem", listItemCabang);
-        model.addAttribute("noCabang", noCabang);
-
-
-        cabangService.addCabang(cabangService.getCabang(noCabang), user);
+        cabang.getListItem().remove(index);
+        List<ItemDTO> listItem = itemCabangService.getAllItem();
+        model.addAttribute("items",listItem);
+        model.addAttribute("cabang",cabang);
+        model.addAttribute("noCabang",noCabang);
         return "form-add-item2";
     }
 
