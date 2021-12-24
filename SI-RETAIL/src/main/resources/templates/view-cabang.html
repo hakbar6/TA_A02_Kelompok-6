@@ -56,7 +56,7 @@
                                 <td class="text-center align-middle" th:text="${item.kategori}"></td>
                                 <td class="text-center align-middle" th:text="${item.id_promo}"></td>
                                 <td th:if="${item.id_promo} == 0">
-                                    <form th:action="@{/couponList/} + ${cabang.noCabang} + @{/} + ${item.id}">
+                                    <form sec:authorize="hasAnyAuthority('Kepala Retail', 'Manager Cabang')" th:action="@{/couponList/} + ${cabang.noCabang} + @{/} + ${item.id}">
                                         <input hidden type="number" name="id" th:value="${item.id}">
                                         <input hidden type="text" name="namaitem" th:value="${item.namaItem}">
                                         <button class="btn btn-success" type="submit">Terapkan Promo</button>
@@ -82,7 +82,7 @@
                 </div>
                 <br>
                 <a class="btn btn-danger" th:href="@{/cabang}">Kembali</a>
-                <a class="btn btn-success" th:href="@{/item/additem/} + ${cabang.noCabang}">Add Item</a>
+                <a class="btn btn-success" sec:authorize="hasAnyAuthority('Kepala Retail', 'Manager Cabang')" th:href="@{/item/additem/} + ${cabang.noCabang}">Add Item</a>
                 <a class="btn btn-success" th:href="@{/item/requestitem/} + ${cabang.noCabang}">Request Item</a>
             </div>
         </div>
