@@ -1,5 +1,6 @@
 package APAP.tugasAkhir.SIRETAIL.service;
 
+import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
 import APAP.tugasAkhir.SIRETAIL.rest.ItemDTO;
 
@@ -14,4 +15,5 @@ public interface ItemCabangService {
     void requestItem(String uuid, Integer integer,int stock, Long noCabang);
     ItemCabangModel getItemFromDB(Long id);
     void deleteItemFromDB(Long id);
+    ItemCabangModel getItemInCabang(CabangModel cabang, String uuid);
 }

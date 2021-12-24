@@ -1,5 +1,6 @@
 package APAP.tugasAkhir.SIRETAIL.service;
 
+import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
 import APAP.tugasAkhir.SIRETAIL.repository.ItemCabangDb;
 import APAP.tugasAkhir.SIRETAIL.rest.BaseResponse;
@@ -116,6 +117,17 @@ public class ItemCabangServiceImpl implements ItemCabangService{
         }else{
             throw new NoSuchElementException();
         }
+    }
+
+    @Override
+    public ItemCabangModel getItemInCabang(CabangModel cabang, String uuid){
+        List<ItemCabangModel> listItemCabang = cabang.getListItem();
+        for (ItemCabangModel item : listItemCabang){
+            if(item.getUuid().equals(uuid)){
+                return item;
+            }
+        }
+        return null;
     }
 
     @Override

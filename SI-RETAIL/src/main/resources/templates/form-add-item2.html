@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tambah Item</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<div class="container justify-content-center">
+    <br>
+    <div class="card m-4 p-4 cardHome">
+        <div class="card-body">
+            <div class="justify-content-center">
+                <h2 class="text-center"><b>Form Tambah Item</b></h2>
+                <br>
+                    <form th:action="@{/item/additem/} + ${noCabang}" method="post" th:object="${cabang}">
+                        <input type="hidden" th:field="*{noCabang}" />
+                        <input type="hidden" th:field="*{user}" />
+                        <input  type="hidden" th:field="*{statusCabang}"/>
+                        <input  type="hidden" th:field="*{namaCabang}"/>
+                        <input  type="hidden" th:field="*{alamatCabang}"/>
+                        <input  type="hidden" th:field="*{noTelpCabang}"/>
+                        <input  type="hidden" th:field="*{ukuranCabang}"/>
+
+                        <table class = "table">
+                            <h2 th:text="'Menambahkan Item ke cabang ' + *{namaCabang}"></h2>
+                            <thead>
+                            <tr>
+                                <th>Nama Item</th>
+                                <th class = "align-content-end">
+                                    <button class="btn btn-primary" type="submit" name="addRow">Tambah Row</button>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="item, iterationStatus:*{listItem}">
+                                    <td>
+                                        Nama Item: <br>
+                                        <!-- <select class="form-control" id="item" name="itemuuid">-->
+                                        <select th:field="*{listItem[__${iterationStatus.index}__].uuid}">
+                                            <option th:value="''"> -- Pilih Item -- </Option>
+                                            <option th:each="i : ${items}" th:value="${i.uuid}" th:text="${i.nama}"></option>
+                                        </select>
+                                        <br><br>
+                                    </td>
+                                    <td>
+                                        Jumlah: <br>
+                                        <input class="form-control" min = "1" type="number" th:name="itemstok" placeholder = "-- Kuantitas Item --" th:field ="*{listItem[__${iterationStatus.index}__].stokItem}"/>
+                                        <br><br>
+                                    </td>
+                                    <td>
+                                        <button th:value = "${iterationStatus.index}" class = "btn btn-danger" type = "submit" name="deleteRow">Hapus</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                            <input type="submit" value="Tambah" class="btn btn-primary" name="save">
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:replace="fragments/fragment :: src1"></script>
+<script th:replace="fragments/fragment :: src2"></script>
+<script th:replace="fragments/fragment :: src3"></script>
+
+</body>
+</html>
