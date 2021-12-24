@@ -6,29 +6,28 @@
     <object th:include="fragments/fragment :: css" th:remove="tag"></object>
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
-<body>
-<div class="container-fluid">
-    <h2>Hello!</h2>
-    <div class="row d-flex align-items-center flex-column justify-content-center h-100">
+<body class="login-html">
+<!--style="background-image: url('https://cdn.pixabay.com/photo/2020/10/01/17/11/store-5619201_960_720.jpg');"-->
+<div class="container-fluid section-login">
+    <div class="row d-flex align-items-center flex-column justify-content-center h-50">
         <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">Log In</h2>
+            <div class="card mb-3 cardHome">
+                <img src="https://cdn.pixabay.com/photo/2020/10/01/17/11/store-5619201_960_720.jpg" class="card-img-top" height="200">
+                <div class="card-body justify-content-center">
+                    <h2 class="card-title text-center"> <b>Log In</b> </h2>
                     <div th:if="${param.error}">
                         <span style="color: red">Invalid username or password</span>
                     </div>
                     <form th:action="@{/login}" method="POST">
-                        <div class="row form-group">
-                            <label class="col-sm-4"> Username: </label>
-                            <input type="text" class="col-sm-8 form-control input-sm" name="username">
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-sm-4"> Password: </label>
-                            <input type="password" class="col-sm-8 form-control input-sm" name="password">
-                        </div>
-                        <div class="row form-group">
-                            <button type="submit" class="btn btn-primary"> Sign In </button>
-                        </div>
+                        Username: <br>
+                        <input class="form-control" type="text" name="username" />
+                        <br>
+
+                        Password: <br>
+                        <input type="password" class="form-control " name="password">
+                        <br>
+                        <br>
+                        <button type="submit" class="btn btn-primary tombol-sign"> Sign In </button>
                     </form>
                 </div>
             </div>
