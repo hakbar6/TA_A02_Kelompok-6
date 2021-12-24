@@ -93,7 +93,7 @@ public class UserController {
         List<RoleModel>  listRole = roleService.listRole();
         UserModel user = userService.getUserByUsername(username);
         String editorRole = userService.getUserByUsername(auth.getName()).getRole().getRole();
-        if (editorRole.equals("Manager Cabang") && (user.getRole().getRole().equals("Kepala Retail") || user.getRole().getRole().equals("Staff Cabang"))) {
+        if (editorRole.equals("Manager Cabang") && (user.getRole().getRole().equals("Kepala Retail"))) {
             red.addFlashAttribute("pesanError","Role anda tidak dapat mengakses fitur ini");
             return "redirect:/user/viewalluser";
         }
