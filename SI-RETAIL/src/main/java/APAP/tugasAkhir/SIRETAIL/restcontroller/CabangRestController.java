@@ -46,7 +46,7 @@ public class CabangRestController {
                 response.setResult(newCabang);
             } catch (Exception e) {
                 response.setStatus(400);
-                response.setMessage("perhatikan data yang kamu kirimkan");
+                response.setMessage("Data yang kamu kirimkan tidak sesuai");
                 response.setResult(null);
             }
             return response;
