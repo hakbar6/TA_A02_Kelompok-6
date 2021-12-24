@@ -4,9 +4,11 @@ import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.UserModel;
 import APAP.tugasAkhir.SIRETAIL.repository.CabangDb;
+import APAP.tugasAkhir.SIRETAIL.rest.CouponDTO;
 import APAP.tugasAkhir.SIRETAIL.rest.ItemDTO;
 import APAP.tugasAkhir.SIRETAIL.service.CabangService;
 import APAP.tugasAkhir.SIRETAIL.service.ItemCabangService;
+import APAP.tugasAkhir.SIRETAIL.service.KuponService;
 import APAP.tugasAkhir.SIRETAIL.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +77,9 @@ public class ItemController {
     @Autowired 
     CabangService cabangService;
 
+    @Autowired
+    private KuponService kuponService;
+
     @GetMapping("/item/additem/{noCabang}")
     public String addItem(
         @PathVariable Long noCabang,
@@ -109,33 +114,34 @@ public class ItemController {
         @ModelAttribute CabangModel cabang,
         Model model
     ) {
-        ItemCabangModel itemCabangModel = new ItemCabangModel();
-        ItemDTO iteminSiItem = itemCabangService.getItem(uuid);
-        if (stok > iteminSiItem.stok) {
-            red.addFlashAttribute("pesanError", "Stok " + iteminSiItem.nama + " tidak cukup, stok maksimal = " + iteminSiItem.stok);
-            return "redirect:/cabang/view?noCabang="+noCabang;
-        }if(iteminSiItem.stok > stok){
-            ItemCabangModel itemHasExist = itemCabangService.getItemInCabang(cabangService.getCabang(noCabang), itemCabangModel.getUuid());
-            if(itemHasExist != null){
-                //Masih belum bisa nangkep kalau barangnya sama
-                int newStock = itemHasExist.getStokItem() + stok;
-                itemHasExist.setStokItem(newStock);
-            }else{
-                itemCabangModel.setCabang(cabangService.getCabang(noCabang));
-                itemCabangModel.setNamaItem(iteminSiItem.nama);
-                itemCabangModel.setHargaItem(iteminSiItem.harga);
-                itemCabangModel.setKategori(iteminSiItem.kategori);
-                itemCabangModel.setUuid(uuid);
-                itemCabangModel.setStokItem(stok);
-                itemCabangModel.setId_promo(1);
-                itemCabangService.addItem(itemCabangModel);
-                
+        for (int i = 0 ; i < cabang.getListItem().size() ; i++){
+            ItemCabangModel itemCabangModel = new ItemCabangModel();
+            ItemDTO iteminSiItem = itemCabangService.getItem(uuid);
+            if (stok > iteminSiItem.stok) {
+                red.addFlashAttribute("pesanError", "Stok " + iteminSiItem.nama + " tidak cukup, stok maksimal = " + iteminSiItem.stok);
+                return "redirect:/cabang/view?noCabang="+noCabang;
+            }if(iteminSiItem.stok > stok){
+                ItemCabangModel itemHasExist = itemCabangService.getItemInCabang(cabangService.getCabang(noCabang), itemCabangModel.getUuid());
+                if(itemHasExist != null){
+                    //Masih belum bisa nangkep kalau barangnya sama
+                    int newStock = itemHasExist.getStokItem() + stok;
+                    itemHasExist.setStokItem(newStock);
+                }else{
+                    itemCabangModel.setCabang(cabangService.getCabang(noCabang));
+                    itemCabangModel.setNamaItem(iteminSiItem.nama);
+                    itemCabangModel.setHargaItem(iteminSiItem.harga);
+                    itemCabangModel.setKategori(iteminSiItem.kategori);
+                    itemCabangModel.setUuid(uuid);
+                    itemCabangModel.setStokItem(stok);
+                    itemCabangModel.setId_promo(1);
+                    itemCabangService.addItem(itemCabangModel);
+                }
+                itemCabangService.updateSiItem(uuid, iteminSiItem.stok-stok);
             }
-            itemCabangService.updateSiItem(uuid, iteminSiItem.stok-stok);
+            model.addAttribute("noCabang", noCabang);
+            model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
+            model.addAttribute("itemname", itemCabangModel.getNamaItem());
         }
-        model.addAttribute("noCabang", noCabang);
-        model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
-        model.addAttribute("itemname", itemCabangModel.getNamaItem());
         return "add-item";
     }
 
@@ -146,6 +152,9 @@ public class ItemController {
         Model model
     ) {
         cabang.getListItem().add(new ItemCabangModel());
+        if(cabang.getListItem() == null || cabang.getListItem().size() == 0){
+            cabang.setListItem(new ArrayList<ItemCabangModel>());
+        }
         List<ItemDTO> listItem = itemCabangService.getAllItem();
         model.addAttribute("items",listItem);
         model.addAttribute("cabang",cabang);
@@ -202,4 +211,6 @@ public class ItemController {
         model.addAttribute("nama", namaitem);
         return "delete-item";
     }
+
+
 }

@@ -4,9 +4,10 @@ import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.UserModel;
 import APAP.tugasAkhir.SIRETAIL.repository.UserDB;
+import APAP.tugasAkhir.SIRETAIL.rest.CouponDTO;
 import APAP.tugasAkhir.SIRETAIL.service.CabangService;
 import APAP.tugasAkhir.SIRETAIL.service.ItemCabangService;
-
+import APAP.tugasAkhir.SIRETAIL.service.KuponService;
 import APAP.tugasAkhir.SIRETAIL.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -32,6 +33,9 @@ public class CabangController {
     @Qualifier("userServiceImpl")
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private KuponService kuponService;
 
     // Method untuk halaman form buat cabang baru
     @GetMapping("/cabang/create")
@@ -159,5 +163,29 @@ public class CabangController {
         model.addAttribute("listItem", listItem);
 
         return "view-cabang";
+    }
+
+    @GetMapping(value = "/couponList/{noCabang}/{id}")
+    private String getCoupon(
+        @PathVariable Long id,
+        @PathVariable Long noCabang,
+        Model model
+    ){
+        List<CouponDTO> couponList = kuponService.getAllKupon();
+        model.addAttribute("couponList", couponList);
+        model.addAttribute("noCabang", noCabang);
+        model.addAttribute("idItem", id);
+        return "viewall-coupon";
+    }
+
+    @GetMapping(value = "/couponApplied")
+    private String couponApplied(
+        @RequestParam Long noCabang,
+        @RequestParam Long id,
+        @RequestParam int idCoupon,
+        @RequestParam float discountAmount
+    ){
+        kuponService.kuponApply(id, idCoupon, discountAmount);
+        return String.format("redirect:/cabang/view?noCabang=%s", noCabang);
     }
 }
