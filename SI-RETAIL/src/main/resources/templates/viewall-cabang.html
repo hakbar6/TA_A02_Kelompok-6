@@ -12,7 +12,6 @@
 
 <nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
 <div class="container justify-content-center">
-    <br>
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="d-flex justify-content-center">
@@ -45,7 +44,7 @@
                         <td class="text-center align-middle" th:if="${cabang.statusCabang} == 1">Ditolak</td>
                         <td class="text-center align-middle" th:if="${cabang.statusCabang} == 2">Disetujui</td>
                         <td class="text-center align-middle"><a class="btn btn-info btn-sm" th:href="@{/cabang/view(noCabang=${cabang.noCabang})}">Detail</a></td>
-                        <td class="text-center align-middle"><a class="btn btn-primary btn-sm" th:href="@{/cabang/update/} + ${cabang.noCabang}">Update</a></td>
+                        <td class="text-center align-middle" sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')" ><a class="btn btn-primary btn-sm" th:href="@{/cabang/update/} + ${cabang.noCabang}">Update</a></td>
                         <td class="text-center align-middle"><a class="btn btn-danger btn-sm" th:href="@{/cabang/delete/} + ${cabang.noCabang}">Delete</a></td>
                     </tr>
                     </tbody>

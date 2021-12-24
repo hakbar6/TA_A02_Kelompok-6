@@ -33,6 +33,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // Method untuk merujuk ke halaman manage user
+    @GetMapping("")
+    public String manageUser(
+            Model model
+    ){
+        return "user";
+    }
+
     @GetMapping(value = "/create")
     public String addUserFormPage(
             Model model

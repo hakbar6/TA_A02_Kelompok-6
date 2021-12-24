@@ -6,6 +6,7 @@
   <head th:fragment="css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 <!--    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">-->
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <link rel="stylesheet" th:href="@{/css/design.css}">
   </head>
   <head th:fragment="js">
@@ -32,6 +33,9 @@
     <ul class="navbar-nav mr-auto">
       <li th:classappend="${page == 'Cabang'} ? active:''" class="nav-item">
         <a class="nav-link" th:href="@{/cabang}">Cabang</a>
+      </li>
+      <li th:classappend="${page == 'User'} ? active:''" class="nav-item">
+        <a class="nav-link" th:href="@{/user}">User</a>
       </li>
     </ul>
     <ul class="navbar-nav pull-right">

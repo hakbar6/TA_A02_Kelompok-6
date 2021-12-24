@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Manage User </title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body class="login-html">
+
+<nav th:replace="fragments/fragment :: navbar('User')"></nav>
+<div class="container justify-content-center">
+    <div class="card m-4 p-4 cardHome">
+        <div class="card-body">
+            <div class="d-flex justify-content-center" sec:authorize="hasAnyAuthority('Kepala Retail')">
+                <div class="m-3">
+                    <h2 class="txt-align"> <b> Kelola User SI-RETAIL</b> </h2>
+                    <br><br>
+                    <div class="d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col-sm-6" >
+                                <div class="card w-100 h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title"> <b> Fitur Menambahkan User </b> </h5>
+                                        <p class="card-text"> Fitur ini digunakan kepala retail untuk membuat user baru  </p>
+                                        <a th:href="@{/user/create}" class="mx-2 btn btn-success"> Create User </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="card w-100 h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title"> <b>Lihat Semua User</b> </h5>
+                                        <p class="card-text"> Lihat Semua User yang ada di SI-RETAIL</p>
+                                        <br><br>
+                                        <a th:href="@{/user/viewalluser}" class="mx-2 btn btn-primary"> Lihat Semua User </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center" sec:authorize="hasAnyAuthority('Manager Cabang', 'Staff Cabang')">
+                <div class="m-3">
+                    <h2 class="txt-align"> <b> Kelola User SI-RETAIL</b> </h2>
+                    <br><br>
+                    <div class="d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div class="card w-100 h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title"> <b>Lihat Semua User</b> </h5>
+                                        <p class="card-text"> Lihat Semua User yang ada di SI-RETAIL</p>
+                                        <br><br>
+                                        <a th:href="@{/user/viewalluser}" class="mx-2 btn btn-primary"> Lihat Semua User </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+</div>
+
+<script th:replace="fragments/fragment :: src1"></script>
+<script th:replace="fragments/fragment :: src2"></script>
+<script th:replace="fragments/fragment :: src3"></script>
+
+</body>
+</html>
