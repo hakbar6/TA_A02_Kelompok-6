@@ -22,12 +22,17 @@ public class CabangRestServiceImpl implements CabangRestService{
     @Override
     public CabangModel createCabangAPI(CabangDTO cabangDTO) {
         CabangModel cabang = new CabangModel();
-        cabang.setNamaCabang(cabangDTO.namaCabang);
-        cabang.setAlamatCabang(cabangDTO.alamatCabang);
-        cabang.setNoTelpCabang(cabangDTO.noTelpCabang);
-        cabang.setUkuranCabang(cabangDTO.ukuranCabang);
-        cabang.setStatusCabang(0);
-        return cabangDb.save(cabang);
+        if ( (cabangDTO.namaCabang.equals("")) || (cabangDTO.alamatCabang.equals("")) ||
+                (cabangDTO.noTelpCabang.equals("")) || (cabangDTO.ukuranCabang <= 0) ){
+            throw new UnsupportedOperationException();
+        }else{
+            cabang.setNamaCabang(cabangDTO.namaCabang);
+            cabang.setAlamatCabang(cabangDTO.alamatCabang);
+            cabang.setNoTelpCabang(cabangDTO.noTelpCabang);
+            cabang.setUkuranCabang(cabangDTO.ukuranCabang);
+            cabang.setStatusCabang(0);
+            return cabangDb.save(cabang);
+        }
     }
 
     @Override
