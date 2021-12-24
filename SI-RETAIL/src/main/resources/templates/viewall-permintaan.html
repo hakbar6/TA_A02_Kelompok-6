@@ -43,16 +43,10 @@
                         <td class="text-center align-middle" th:if="${cabang.statusCabang} == 1">Ditolak</td>
                         <td class="text-center align-middle" th:if="${cabang.statusCabang} == 2">Disetujui</td>
                         <td class="text-center align-middle">
-                            <form th:action="@{/cabang/accept}" method="POST">
-                                <input type="hidden" th:name="noCabang" th:value="${cabang.noCabang}"/>
-                                <button class="btn btn-success" type="submit">Accept</button>
-                            </form>
+                            <button class="btn btn-success" th:attr="onclick=|popupaccept('${cabang.noCabang}')|" >Accept</button>
                         </td>
                         <td class="text-center align-middle">
-                            <form th:action="@{/cabang/reject}" method="POST">
-                                <input type="hidden" th:name="noCabang" th:value="${cabang.noCabang}"/>
-                                <button class="btn btn-danger" type="submit">Reject</button>
-                            </form>
+                            <button class="btn btn-danger" th:attr="onclick=|popupreject('${cabang.noCabang}')|">Reject</button>
                         </td>
                     </tr>
                     </tbody>
@@ -68,6 +62,101 @@
 <script th:replace="fragments/fragment :: src1"></script>
 <script th:replace="fragments/fragment :: src2"></script>
 <script th:replace="fragments/fragment :: src3"></script>
+<script th:replace="fragments/fragment :: src4"></script>
+<script>
+
+    function acceptcabang($value) {
+        turnOff();
+        $.ajax({
+            type: "POST",
+            url : "/internal/api/cabang/accept/" + $value,
+            data : {},
+            success: function(response) {
+                $("body").append(
+                    `
+                        <div class="overlay" onclick="turnOff()">
+                            <div class="overlay-item">
+                                <h4> Cabang dengan Nama `+ response + ` Berhasil disetujui  </h4>
+                                <br>
+                                <div class="d-flex justify-content-center">
+                                    <button id="overlay-close" onclick="turnOffPesan()" class="mx-2 btn btn-success" > Tutup </button>
+                                </div>
+                            </div>
+                        </div>
+                        `
+                );
+            },
+        });
+    }
+
+    function rejectcabang($value) {
+        turnOff();
+        $.ajax({
+            type: "POST",
+            url : "/internal/api/cabang/reject/" + $value,
+            data : {},
+            success: function(response) {
+                $("body").append(
+                    `
+                        <div class="overlay" onclick="turnOff()">
+                            <div class="overlay-item">
+                                <h4> Cabang dengan Nama `+ response + ` ditolak  </h4>
+                                <br>
+                                <div class="d-flex justify-content-center">
+                                    <button id="overlay-close" onclick="turnOffPesan()" class="mx-2 btn btn-success" > Tutup </button>
+                                </div>
+                            </div>
+                        </div>
+                        `
+                );
+            },
+        });
+    }
+
+    function popupaccept($value) {
+        $("body").append(
+            `
+            <div class="overlay" onclick="turnOff()">
+                <div class="overlay-item">
+                    <h3> Apakah anda yakin ingin menerima permintaan cabang dengan ID `+ $value + ` ?  </h3>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        <button class="mx-2 btn btn-outline-success" onclick="acceptcabang(`+ $value + `)"> Terima </button>
+                        <button id="overlay-close" onclick="turnOff()" class="mx-2 btn btn-outline-primary" > Batal </button>
+                    </div>
+                </div>
+            </div>
+            `
+        );
+    }
+
+    function popupreject($value) {
+        $("body").append(
+            `
+            <div class="overlay" onclick="turnOff()">
+                <div class="overlay-item">
+                    <h3> Apakah anda yakin ingin menolak permintaan cabang dengan ID `+ $value + ` ?  </h3>
+                    <br>
+                    <div class="d-flex justify-content-center">
+                        <button class="mx-2 btn btn-outline-danger" onclick="rejectcabang(`+ $value + `)"> Tolak </button>
+                        <button id="overlay-close" onclick="turnOff()" class="mx-2 btn btn-outline-primary" > Batal </button>
+                    </div>
+                </div>
+            </div>
+            `
+        );
+    }
+
+    function turnOff() {
+        $(".overlay").remove();
+    }
+
+    function turnOffPesan() {
+        $(".overlay").remove();
+        location.reload();
+    }
+
+</script>
 
 </body>
 </html>
