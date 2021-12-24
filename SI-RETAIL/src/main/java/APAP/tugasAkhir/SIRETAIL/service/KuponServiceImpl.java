@@ -23,26 +23,28 @@ public class KuponServiceImpl implements KuponService{
     ItemCabangDb itemCabangDb;
 
     public List<CouponDTO> getAllKupon(){
-        WebClient webClient = WebClient.builder().baseUrl("https://si-business.herokuapp.com").build();
-        Mono<BaseResponse<List<CouponDTO>>> response = webClient.get().uri("/api/list-couponToday")
+        WebClient webClient = WebClient.builder().baseUrl("https://a02-4-sibusiness.herokuapp.com").build();
+        Mono<List<CouponDTO>> response = webClient.get().uri("/api/v1/coupon")
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .bodyToMono(new ParameterizedTypeReference<BaseResponse<List<CouponDTO>>>() {});
+                .bodyToMono(new ParameterizedTypeReference<List<CouponDTO>>() {});
 
-        BaseResponse<List<CouponDTO>> couponDTOS = response.block();
+        List<CouponDTO> couponDTOS = response.block().stream().collect(Collectors.toList());
         System.out.println("halo");
-        System.out.println(couponDTOS.getResult().get(0).couponName);
-        return couponDTOS.getResult().stream().collect(Collectors.toList());
+        return couponDTOS;
     }
 
     @Override
     public ItemCabangModel kuponApply(Long idItem, int idKupon, float discountAmount){
         ItemCabangModel itemInCabang = itemCabangDb.getById(idItem);
-        int discount = Math.round(discountAmount / 100) * itemInCabang.getHargaItem();
+        int discount = Math.round(discountAmount) * itemInCabang.getHargaItem() / 100;
         int hargaItem = itemInCabang.getHargaItem();
-        itemInCabang.setHargaItem(hargaItem - discount);
+        int hargaAkhir = hargaItem - discount;
+        itemInCabang.setHargaItem(hargaAkhir);
         itemInCabang.setId_promo(idKupon);
         itemCabangDb.save(itemInCabang);
+        System.out.println(discount);
+        System.out.println(discountAmount);
         return itemInCabang;
     }
 }

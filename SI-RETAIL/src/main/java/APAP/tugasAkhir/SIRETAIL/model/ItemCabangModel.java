@@ -31,7 +31,7 @@ public class ItemCabangModel implements Serializable{
 
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
-    @Column(name="uuid_item", nullable = false, unique = true)
+    @Column(name="uuid_item", nullable = false)
     private String uuid;
 
     @NotNull
