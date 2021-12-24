@@ -1,7 +1,17 @@
+body {
+    font-family: "Inter";
+}
+
 .cardHome {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 
 }
+
+.img-shape{
+    border-bottom-left-radius: 1%;
+    border-top-left-radius: 1%;
+}
+
 
 .txt-align{
     text-align: center;
@@ -52,4 +62,108 @@
     border-radius: 8px;
     border: #1b1e21;
 }
+
+.section-login{
+    margin-top: 5%;
+}
+
+.login-html{
+    background: #F0F8FF;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif
+}
+
+.container {
+    margin: 50px auto
+}
+
+.body {
+    position: relative;
+    width: 720px;
+    height: 440px;
+    margin: 20px auto;
+    border: 1px solid #dddd;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px
+}
+
+.box-1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+.box-2 {
+    padding: 10px
+}
+
+.box-1,
+.box-2 {
+    width: 50%
+}
+
+.h-1 {
+    font-size: 24px;
+    font-weight: 700
+}
+
+.text-muted {
+    font-size: 14px
+}
+
+/* footer */
+
+.footer {
+    background-color: black;
+    padding-top: 5%;
+    padding-bottom: 1%;
+}
+
+.footer-title {
+    font-size: 28px;
+    color: white;
+    font-weight: bold;
+}
+
+.footer-sosmed {
+    padding-top: 2%;
+    margin-left: 20%;
+}
+
+.footer-contact {
+    font-weight: bold;
+    color: white;
+    padding-top: 3%;
+    font-size: 16px;
+}
+
+.navtext {
+    color: white;
+}
+
+#jumbo {
+    /* IE8 and below */
+    background: rgb(229, 255, 255);
+    /* all other browsers */
+    background: rgb(229, 255, 255, 0.68);
+}
+
+.caro-font {
+    font-size: 6.290956749672346vh;
+    font-weight: bold;
+    color: #04000d;
+}
+
+.text-judul{
+    color: #00BFFF;
+}
+
 

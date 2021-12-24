@@ -8,7 +8,7 @@
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
-<body>
+<body class="login-html">
 
 <nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
 <div class="container justify-content-center">
@@ -18,7 +18,8 @@
             <div class="justify-content-center">
                 <h2 th:text="'Cabang dengan nomor ' + ${noCabang} + ' berhasil ditambahkan.'"></h2>
                 <br>
-                <a class="btn btn-primary" th:href="@{/cabang/daftarCabang}">Kembali</a>
+                <a class="btn btn-primary" th:href="@{/cabang/daftarCabang}"> Lihat semua cabang </a>
+                <a class="btn btn-primary" th:href="@{/cabang}"> Kembali </a>
             </div>
         </div>
     </div>

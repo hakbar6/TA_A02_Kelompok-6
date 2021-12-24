@@ -77,11 +77,18 @@ public class CabangController {
     // Method untuk menampilkan halaman daftar permintaan
     @GetMapping("/cabang/daftarPermintaan")
     public String viewAllPermintaan(
-            Model model
+            Model model,
+            Authentication authentication
     ){
-        List<CabangModel> permintaan = cabangService.getListPermintaan();
-        model.addAttribute("permintaan",permintaan);
-        return "viewall-permintaan";
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        if (user.getRole().getRole().equals("Kepala Retail")){
+            List<CabangModel> permintaan = cabangService.getListPermintaan();
+            model.addAttribute("permintaan",permintaan);
+            return "viewall-permintaan";
+        }else{
+            return "error/403";
+        }
     }
     // pekerjaan harakan tutup
 
