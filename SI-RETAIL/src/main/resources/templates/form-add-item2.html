@@ -43,8 +43,7 @@
                                         Nama Item: <br>
                                         <!-- <select class="form-control" id="item" name="itemuuid">-->
                                         <select th:field="*{listItem[__${iterationStatus.index}__].uuid}">
-                                            <option th:value="''"> -- Pilih Item -- </Option>
-                                            <option th:each="i : ${items}" th:value="${i.uuid}" th:text="${i.nama}"></option>
+                                            <option required minlength="1" th:each="i : ${items}" th:value="${i.uuid}" th:text="${i.nama}" placeholder = "--<Pilih Item>--"></option>
                                         </select>
                                         <br><br>
                                     </td>
