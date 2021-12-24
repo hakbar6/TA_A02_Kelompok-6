@@ -3,6 +3,7 @@ package APAP.tugasAkhir.SIRETAIL.repository;
 
 import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.UserModel;
+import APAP.tugasAkhir.SIRETAIL.rest.CabangDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
