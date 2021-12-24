@@ -40,11 +40,19 @@ public class CabangController {
     // Method untuk halaman form buat cabang baru
     @GetMapping("/cabang/create")
     public String addCabangForm(
-            Model model
+            Model model,
+            Authentication authentication
     ) {
-        CabangModel cabang = new CabangModel();
-        model.addAttribute("cabang", cabang);
-        return "form-add-cabang";
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        if (user.getRole().getRole().equals("Kepala Retail") ||
+                user.getRole().getRole().equals("Manager Cabang") ){
+            CabangModel cabang = new CabangModel();
+            model.addAttribute("cabang", cabang);
+            return "form-add-cabang";
+        }else{
+            return "error/403";
+        }
     }
 
     // Method untuk submit form buat cabang baru
@@ -57,20 +65,33 @@ public class CabangController {
     ) {
         String username = ((UserDetails)authentication.getPrincipal()).getUsername();
         UserModel user = userService.getUserByUsername(username);
-        cabangService.addCabang(cabang,user);
-        model.addAttribute("noCabang", cabang.getNoCabang());
-        return "add-cabang";
+        if (user.getRole().getRole().equals("Kepala Retail") ||
+                user.getRole().getRole().equals("Manager Cabang") ){
+            cabangService.addCabang(cabang,user);
+            model.addAttribute("noCabang", cabang.getNoCabang());
+            return "add-cabang";
+        }else{
+            return "error/403";
+        }
     }
 
     // Method untuk halaman form ubah informasi cabang
     @GetMapping("/cabang/update/{noCabang}")
     public String updateCabangForm(
             @PathVariable Long noCabang,
-            Model model
+            Model model,
+            Authentication authentication
     ) {
-        CabangModel cabang = cabangService.getCabang(noCabang);
-        model.addAttribute("cabang", cabang);
-        return "form-update-cabang";
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        if (user.getRole().getRole().equals("Kepala Retail") ||
+                user.getRole().getRole().equals("Manager Cabang")){
+            CabangModel cabang = cabangService.getCabang(noCabang);
+            model.addAttribute("cabang", cabang);
+            return "form-update-cabang";
+        }else{
+            return "error/403";
+        }
     }
 
 
@@ -96,11 +117,19 @@ public class CabangController {
     @PostMapping("/cabang/update")
     public String updateCabangSubmit(
             @ModelAttribute CabangModel cabang,
-            Model model
+            Model model,
+            Authentication authentication
     ) {
-        cabangService.updateCabang(cabang);
-        model.addAttribute("noCabang", cabang.getNoCabang());
-        return "update-cabang";
+        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
+        UserModel user = userService.getUserByUsername(username);
+        if (user.getRole().getRole().equals("Kepala Retail") ||
+                user.getRole().getRole().equals("Manager Cabang")){
+            cabangService.updateCabang(cabang);
+            model.addAttribute("noCabang", cabang.getNoCabang());
+            return "update-cabang";
+        }else{
+            return "error/403";
+        }
     }
 
     // Method untuk menghapus cabang
