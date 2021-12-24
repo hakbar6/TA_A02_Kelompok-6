@@ -10,7 +10,7 @@
 
 <body class="login-html">
 
-<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<nav th:replace="fragments/fragment :: navbar('User')"></nav>
 <div class="container cardAddBoba">
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <button class="btn btn-success" name="save" type="submit">Submit</button>
-                    <a class="btn btn-primary btn-danger" th:href="@{/}">Cancel</a>
+                    <a class="btn btn-primary btn-danger" th:href="@{/user}">Cancel</a>
                 </form>
             </div>
         </div>
