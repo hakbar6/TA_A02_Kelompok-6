@@ -8,11 +8,10 @@
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
-<body>
+<body class="login-html">
 
 <nav th:replace="fragments/fragment :: navbar('Cabang')"></nav>
 <div class="container justify-content-center">
-    <br>
     <div class="card m-4 p-4 cardHome">
         <div class="card-body">
             <div class="d-flex justify-content-center">
@@ -20,9 +19,35 @@
                     <h2 class="txt-align"> <b>Daftar fitur CABANG SI-RETAIL</b> </h2>
                     <br><br>
                     <div class="d-flex justify-content-center">
-                        <a sec:authorize="hasAnyAuthority('Kepala Retail')" th:href="@{/cabang/daftarPermintaan}" class="mx-2 btn btn-danger"> Manage Permintaan </a>
-                        <a th:href="@{/cabang/daftarCabang}" class="mx-2 btn btn-primary"> Lihat Semua Cabang </a>
-                        <a class="mx-2 btn btn-success" sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')" th:href="@{/cabang/create}">Tambah Cabang</a>
+                        <div class="row">
+                            <div class="col-sm-4 sec:authorize="hasAnyAuthority('Kepala Retail')" ">
+                                <div class="card w-100 h-30">
+                                    <div class="card-body">
+                                        <h5 class="card-title"> Fitur Kelola Permintaan Cabang </h5>
+                                        <p class="card-text"> Fitur ini digunakan oleh kepala retail untuk mengelola permintaan cabang  </p>
+                                        <a th:href="@{/cabang/daftarPermintaan}" class="mx-2 btn btn-danger"> Manage Permintaan </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card w-100 h-30">
+                                    <div class="card-body">
+                                        <h5 class="card-title"> Lihat Semua Cabang </h5>
+                                        <p class="card-text"> Lihat Semua Cabang yang ada di SI-RETAIL</p>
+                                        <a th:href="@{/cabang/daftarCabang}" class="mx-2 btn btn-primary"> Lihat Semua Cabang </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" sec:authorize="hasAnyAuthority('Manager Cabang', 'Kepala Retail')">
+                                <div class="card w-100 h-30">
+                                    <div class="card-body">
+                                        <h5 class="card-title"> Fitur Membuat Cabang </h5>
+                                        <p class="card-text"> Fitur membuat cabang hanya dapat digunakan oleh manager dan kepala retail </p>
+                                        <a class="mx-2 btn btn-success"  th:href="@{/cabang/create}">Tambah Cabang</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

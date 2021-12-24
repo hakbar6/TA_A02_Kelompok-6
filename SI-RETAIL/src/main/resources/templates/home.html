@@ -8,25 +8,33 @@
     <object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
-<body>
+<body class="login-html">
 <nav th:replace="fragments/fragment :: navbar('Home')"></nav>
 <div class="container">
-    <br>
-    <div class="card m-4 p-4 cardHome">
-        <div class="card-body">
-            <div class="d-flex justify-content-center">
-                <div class="m-4">
-                    <div th:if=${pesan}>
-                        <h3 style="color:green" th:text="${pesan}"></h3>
-                    </div>
-                    <h2><b>Selamat datang di SIRETAIL</b></h2>
-                    <h3 th:text="'Hello ' +${#httpServletRequest.remoteUser} +'! sebagai ' +${role}"></h3>
-                    <br><br>
-                    <h4 class="txt-align">List of feature</h4>
+    <div class="card mb-3 cardHome">
+<!--        https://cdn.pixabay.com/photo/2020/10/01/17/11/store-5619201_960_720.jpg-->
+        <div class="row no-gutters">
+            <div class="col-md-6">
+                <img src="https://cdn.pixabay.com/photo/2019/03/13/11/07/supermarket-4052658_960_720.jpg" class="img-fluid img-shape" height="400" alt="...">
+            </div>
+            <div class="col-md-6">
+                <div class="card-body">
                     <div class="d-flex justify-content-center">
-<!--                        <a th:href="@{/user/create}" class="mx-2 btn btn-outline-dark"> Create User </a>-->
-                        <a sec:authorize="hasAuthority('Kepala Retail')" th:href="@{/user/create}" class="mx-2 btn btn-outline-dark"> Create User </a>
-                        <a th:href="@{/user/viewalluser}" class="mx-2 btn btn-outline-dark"> View All User </a>
+                        <div class="m-4">
+                            <div th:if=${pesan}>
+                                <h3 style="color:green" th:text="${pesan}"></h3>
+                            </div>
+                            <br>
+                            <h2><b>Selamat datang di SIRETAIL</b></h2>
+                            <h3 th:text="'Hello ' +${#httpServletRequest.remoteUser} +'! sebagai ' +${role}"></h3>
+                            <br><br>
+                            <h4 class="txt-align">List of feature</h4>
+                            <div class="d-flex justify-content-center">
+                                <!--                        <a th:href="@{/user/create}" class="mx-2 btn btn-outline-dark"> Create User </a>-->
+                                <a sec:authorize="hasAuthority('Kepala Retail')" th:href="@{/user/create}" class="mx-2 btn btn-outline-dark"> Create User </a>
+                                <a th:href="@{/user/viewalluser}" class="mx-2 btn btn-outline-dark"> View All User </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
