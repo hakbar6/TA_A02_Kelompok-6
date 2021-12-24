@@ -21,7 +21,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"cabang"}, allowSetters = true)
+@JsonIgnoreProperties(value = {"listItem"}, allowSetters = true)
 @Setter 
 @Getter
 @Entity

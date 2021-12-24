@@ -30,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/cabang/delete/**").hasAnyAuthority("Manager Cabang", "Kepala Retail")
                 .antMatchers("/cabang/daftarPermintaan").hasAnyAuthority("Kepala Retail")
                 .antMatchers("/cabang/addItem/**").hasAnyAuthority("Kepala Retail", "Manager Cabang")
-                .antMatchers("/cabang/**").hasAnyAuthority("Kepala Retail")
                 .antMatchers("/cabang/accept").hasAnyAuthority("Kepala Retail")
                 .antMatchers("/cabang/reject").hasAnyAuthority("Kepala Retail")
                 .anyRequest().authenticated()
@@ -60,7 +59,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                .withUser("SIRETAIL").password(encoder().encode("SIRETAIL"))
                .roles("USER");
    }
-
 
     @Autowired
     private UserDetailsService userDetailsService;

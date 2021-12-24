@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -27,4 +28,9 @@ public class CabangRestServiceImpl implements CabangRestService{
         return cabangDb.save(cabang);
     }
     // pekerjaan harakan tutup
+
+    @Override
+    public List<CabangModel> retrieveListCabang() {
+        return cabangDb.findAll();
+    }
 }
