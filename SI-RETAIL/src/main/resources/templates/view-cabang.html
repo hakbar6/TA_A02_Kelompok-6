@@ -55,12 +55,15 @@
                                 <td class="text-center align-middle" th:text="${item.stokItem}"></td>
                                 <td class="text-center align-middle" th:text="${item.kategori}"></td>
                                 <td class="text-center align-middle" th:text="${item.id_promo}"></td>
-                                <td>
+                                <td th:if="${item.id_promo} == 0">
                                     <form th:action="@{/couponList/} + ${cabang.noCabang} + @{/} + ${item.id}">
                                         <input hidden type="number" name="id" th:value="${item.id}">
                                         <input hidden type="text" name="namaitem" th:value="${item.namaItem}">
                                         <button class="btn btn-success" type="submit">Terapkan Promo</button>
                                     </form>
+                                </td>
+                                <td th:if="${item.id_promo} != 0">
+                                    Sudah Didiskon!
                                 </td>
                                 <td>
                                     <form action="/item/delete" method="post">

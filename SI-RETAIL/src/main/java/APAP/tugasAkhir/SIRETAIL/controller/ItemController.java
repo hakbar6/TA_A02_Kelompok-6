@@ -4,6 +4,7 @@ import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.ItemCabangModel;
 import APAP.tugasAkhir.SIRETAIL.model.UserModel;
 import APAP.tugasAkhir.SIRETAIL.repository.CabangDb;
+import APAP.tugasAkhir.SIRETAIL.repository.ItemCabangDb;
 import APAP.tugasAkhir.SIRETAIL.rest.CouponDTO;
 import APAP.tugasAkhir.SIRETAIL.rest.ItemDTO;
 import APAP.tugasAkhir.SIRETAIL.service.CabangService;
@@ -105,41 +106,39 @@ public class ItemController {
         }
     }
 
-    @PostMapping(value="/item/additem", params = "save")
+    @PostMapping(value="/item/additem/{noCabang}", params = "save")
     public String postMethodName(
-        @RequestParam("noCabang") Long noCabang,
-        @RequestParam("itemuuid") String uuid,
-        @RequestParam("itemstok") int stok,
         RedirectAttributes red,
+        @PathVariable Long noCabang,
         @ModelAttribute CabangModel cabang,
         Model model
     ) {
         for (int i = 0 ; i < cabang.getListItem().size() ; i++){
             ItemCabangModel itemCabangModel = new ItemCabangModel();
-            ItemDTO iteminSiItem = itemCabangService.getItem(uuid);
-            if (stok > iteminSiItem.stok) {
+            ItemDTO iteminSiItem = itemCabangService.getItem(cabang.getListItem().get(i).getUuid());
+            if (cabang.getListItem().get(i).getStokItem() > iteminSiItem.stok) {
                 red.addFlashAttribute("pesanError", "Stok " + iteminSiItem.nama + " tidak cukup, stok maksimal = " + iteminSiItem.stok);
-                return "redirect:/cabang/view?noCabang="+noCabang;
-            }if(iteminSiItem.stok > stok){
-                ItemCabangModel itemHasExist = itemCabangService.getItemInCabang(cabangService.getCabang(noCabang), itemCabangModel.getUuid());
+                return "redirect:/cabang/view?noCabang="+cabang.getNoCabang();
+            }if(iteminSiItem.stok > cabang.getListItem().get(i).getStokItem()){
+                ItemCabangModel itemHasExist = itemCabangService.getItemInCabang(cabangService.getCabang(cabang.getNoCabang()), cabang.getListItem().get(i).getUuid());
                 if(itemHasExist != null){
-                    //Masih belum bisa nangkep kalau barangnya sama
-                    int newStock = itemHasExist.getStokItem() + stok;
-                    itemHasExist.setStokItem(newStock);
+                    //ini tu udah bener jadinya nambah, tapi entah kenapa di htmlnya masih sama
+                    itemHasExist.setStokItem(itemHasExist.getStokItem() + cabang.getListItem().get(i).getStokItem());
+                    itemCabangService.addItem(itemHasExist);
                 }else{
-                    itemCabangModel.setCabang(cabangService.getCabang(noCabang));
+                    itemCabangModel.setCabang(cabangService.getCabang(cabang.getNoCabang()));
                     itemCabangModel.setNamaItem(iteminSiItem.nama);
                     itemCabangModel.setHargaItem(iteminSiItem.harga);
                     itemCabangModel.setKategori(iteminSiItem.kategori);
-                    itemCabangModel.setUuid(uuid);
-                    itemCabangModel.setStokItem(stok);
-                    itemCabangModel.setId_promo(1);
+                    itemCabangModel.setUuid(iteminSiItem.uuid);
+                    itemCabangModel.setStokItem(cabang.getListItem().get(i).getStokItem());
+                    itemCabangModel.setId_promo(0);
                     itemCabangService.addItem(itemCabangModel);
                 }
-                itemCabangService.updateSiItem(uuid, iteminSiItem.stok-stok);
+                itemCabangService.updateSiItem(iteminSiItem.uuid, iteminSiItem.stok - cabang.getListItem().get(i).getStokItem());
             }
-            model.addAttribute("noCabang", noCabang);
-            model.addAttribute("namaCabang", cabangService.getCabang(noCabang).getNamaCabang());
+            model.addAttribute("noCabang", cabang.getNoCabang());
+            model.addAttribute("namaCabang", cabang.getNamaCabang());
             model.addAttribute("itemname", itemCabangModel.getNamaItem());
         }
         return "add-item";
