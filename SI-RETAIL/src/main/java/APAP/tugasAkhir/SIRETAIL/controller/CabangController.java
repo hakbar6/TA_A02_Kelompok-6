@@ -69,31 +69,6 @@ public class CabangController {
         return "form-update-cabang";
     }
 
-    @PostMapping("/cabang/accept")
-    public String acceptPermintaan(
-            Authentication authentication,
-            Model model,
-            @RequestParam("noCabang") Long noCabang
-    ){
-        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
-        UserModel user = userService.getUserByUsername(username);
-        CabangModel cabang = cabangService.acceptCabang(noCabang, user);
-//        model.addAttribute("cabang",cabang);
-        return "redirect:/cabang/daftarPermintaan";
-    }
-
-    @PostMapping("/cabang/reject")
-    public String rejectPermintaan(
-            Authentication authentication,
-            Model model,
-            @RequestParam("noCabang") Long noCabang
-    ){
-        String username = ((UserDetails)authentication.getPrincipal()).getUsername();
-        UserModel user = userService.getUserByUsername(username);
-        CabangModel cabang = cabangService.rejectCabang(noCabang, user);
-//        model.addAttribute("cabang",cabang);
-        return "redirect:/cabang/daftarPermintaan";
-    }
 
     // Method untuk menampilkan halaman daftar permintaan
     @GetMapping("/cabang/daftarPermintaan")

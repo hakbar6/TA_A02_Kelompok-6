@@ -54,22 +54,6 @@ public class CabangServiceImpl implements CabangService{
         }
     }
 
-    @Override
-    public CabangModel acceptCabang(Long noCabang, UserModel user) {
-        CabangModel cabang = cabangDb.getById(noCabang);
-        cabang.setStatusCabang(2);
-        cabang.setUser(user);
-        cabang.setListItem(new ArrayList<>());
-        return cabangDb.save(cabang);
-    }
-
-    @Override
-    public CabangModel rejectCabang(Long noCabang, UserModel user) {
-        CabangModel cabang = cabangDb.getById(noCabang);
-        cabang.setStatusCabang(1);
-        cabang.setUser(user);
-        return cabangDb.save(cabang);
-    }
 
     @Override
     public List<CabangModel> getListCabang() {

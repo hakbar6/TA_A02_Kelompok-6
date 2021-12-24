@@ -26,3 +26,30 @@
     color: red;
     font-weight: bold;
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.overlay-item {
+    width: 50%;
+    background-color: white;
+    text-align: center;
+    position: relative;
+    padding-top: 3%;
+    padding-bottom: 3%;
+    padding-left: 3%;
+    padding-right: 3%;
+    border-radius: 8px;
+    border: #1b1e21;
+}
+
