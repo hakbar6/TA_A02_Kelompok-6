@@ -10,8 +10,6 @@ public interface CabangService {
     CabangModel updateCabang (CabangModel cabang);
     void deleteCabang (Long noCabang);
     CabangModel getCabang(Long noCabang);
-    CabangModel acceptCabang(Long noCabang, UserModel user);
-    CabangModel rejectCabang(Long noCabang, UserModel user);
     List<CabangModel> getListCabang();
     List<CabangModel> getListCabangByUser(UserModel user);
     List<CabangModel> getListPermintaan();
