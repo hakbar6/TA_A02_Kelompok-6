@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar User</title>
+    <object th:include="fragments/fragment :: css" th:remove="tag"></object>
+    <object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+
+<nav th:replace="fragments/fragment :: navbar('Home')"></nav>
+<div class="container justify-content-center">
+    <br>
+    <div class="container justify-content-center">
+        <br>
+        <div class="card m-4 p-4 cardHome">
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <h2 class="txt-align"><b>Daftar Kupon</b></h2>
+                    <div class="alert" th:if=${pesanError}>
+                        <br>
+                        <div th:text="${pesanError}" class="alert alert-danger" onclick="this.parentElement.style.display='none';"></div>
+                    </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center align-middle"></th>
+                            <th class="text-center align-middle">Name</th>
+                            <th class="text-center align-middle">Code</th>
+                            <th class="text-center align-middle">Discount</th>
+                            <th class="text-center align-middle">Exp. Date</th>
+                            <th class="text-center align-middle">Action</th>
+                            <th class="text-center align-middle"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="coupon, iterationStatus : ${couponList}">
+                            <td class="text-center align-middle" th:text="${iterationStatus.count}"></td>
+                            <td class="text-center align-middle" th:text="${coupon.couponName}"></td>
+                            <td class="text-center align-middle" th:text="${coupon.couponCode}"></td>
+                            <td class="text-center align-middle" th:text="${coupon.discountAmount}"></td>
+                            <td class="text-center align-middle" th:text="${coupon.expiryDate}"></td>
+                            <td class="text-center align-middle">
+                                <a style="color: blue" th:href="@{/couponApplied(noCabang=${noCabang},id=${idItem},idCoupon=${coupon.idCoupon},discountAmount=${coupon.discountAmount})}" class="btn btn-outline">Pilih Kupon</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <a class="btn btn-primary" href="/">Home</a>
+                </div>
+            </div>
+        </div>
+        <br>
+        <br>
+    </div>
+    <br>
+    <br>
+</div>
+<script th:replace="fragments/fragment :: src1"></script>
+<script th:replace="fragments/fragment :: src2"></script>
+<script th:replace="fragments/fragment :: src3"></script>
+
+</body>
+</html>

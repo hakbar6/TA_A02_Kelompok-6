@@ -60,7 +60,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                .roles("USER");
    }
 
-
     @Autowired
     private UserDetailsService userDetailsService;
 

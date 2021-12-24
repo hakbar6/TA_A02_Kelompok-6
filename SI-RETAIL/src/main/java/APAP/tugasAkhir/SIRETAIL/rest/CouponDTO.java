@@ -3,9 +3,10 @@ package APAP.tugasAkhir.SIRETAIL.rest;
 import java.util.Date;
 
 public class CouponDTO {
-    public int id;
-    public String id_code;
-    public String coupon_name;
-    public int discountAmount;
+    public String couponName;
+    public boolean status;
+    public float discountAmount;
+    public int idCoupon;
     public Date expiryDate;
+    public String couponCode;
 }

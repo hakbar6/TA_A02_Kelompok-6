@@ -1,22 +1,22 @@
 package APAP.tugasAkhir.SIRETAIL.restcontroller;
 
-
 import APAP.tugasAkhir.SIRETAIL.model.CabangModel;
+import APAP.tugasAkhir.SIRETAIL.rest.AlamatDTO;
 import APAP.tugasAkhir.SIRETAIL.rest.BaseResponse;
 import APAP.tugasAkhir.SIRETAIL.rest.CabangDTO;
 import APAP.tugasAkhir.SIRETAIL.restservice.CabangRestService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/cabang")
@@ -25,6 +25,9 @@ public class CabangRestController {
     @Qualifier("cabangRestServiceImpl")
     @Autowired
     private CabangRestService cabangRestService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     // pekerjaan harakan
     @PostMapping()
@@ -51,4 +54,22 @@ public class CabangRestController {
     }
     // pekerjaan harakan tutup
 
+    @GetMapping("/list-alamat")
+    private BaseResponse<List<AlamatDTO>> getListAlamatCabang() {
+        BaseResponse<List<AlamatDTO>> response = new BaseResponse<>();
+        response.setStatus(200);
+        response.setMessage("success");
+        List<CabangModel> listCabang = cabangRestService.retrieveListCabang();
+        response.setResult(
+                listCabang.stream()
+                        .map(this::convertToDto)
+                        .collect(Collectors.toList())
+        );
+        return response;
+    }
+
+    private AlamatDTO convertToDto(CabangModel cabang) {
+        AlamatDTO alamatDTO = modelMapper.map(cabang, AlamatDTO.class);
+        return alamatDTO;
+    }
 }
